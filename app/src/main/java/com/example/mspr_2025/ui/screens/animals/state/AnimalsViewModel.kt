@@ -1,35 +1,37 @@
 package com.example.mspr_2025.ui.screens.animals.state
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mspr_2025.ui.screens.animals.state.AnimalsAction
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
+import com.example.mspr_2025.data.models.Animal
+import com.example.mspr_2025.data.repository.AnimalRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AnimalsViewModel : ViewModel() {
+@HiltViewModel
+class AnimalsViewModel @Inject constructor(
+    private val repository: AnimalRepository
+) : ViewModel() {
 
-    private val _state = MutableStateFlow<AnimalsState>(AnimalsState.Loading)
-    val state = _state.asStateFlow()
+    private val _uiState = MutableStateFlow<AnimalsState>(AnimalsState.Loading)
+    val uiState: StateFlow<AnimalsState> = _uiState
 
     init {
-        loadData()
+        loadAnimals()
     }
 
-    fun onAction(action: AnimalsAction) {
-        when (action) {
-            AnimalsAction.OnRefresh -> loadData()
-        }
-    }
-
-    private fun loadData() {
-        _state.value = AnimalsState.Loading
+    private fun loadAnimals() {
         viewModelScope.launch {
-            delay(1000)
-            _state.value = AnimalsState.Success("Bienvenue depuis Animals !")
+            try {
+                val animals = repository.getAnimals()
+                _uiState.value = AnimalsState.Success(animals)
+            } catch (e: Exception) {
+                Log.e("AnimalsVM", "Erreur parsing JSON", e)
+                _uiState.value = AnimalsState.Error("Erreur de chargement : ${e.message}")
+            }
         }
     }
 }

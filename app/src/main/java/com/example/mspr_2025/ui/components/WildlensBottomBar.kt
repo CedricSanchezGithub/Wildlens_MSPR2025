@@ -25,10 +25,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun WildlensBottomBar(
-    modifier: Modifier = Modifier,
     onHomeClick: () -> Unit,
     onAnimalsClick: () -> Unit,
-    onHelpClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
     BottomAppBar {
@@ -51,7 +49,7 @@ fun WildlensBottomBar(
             BottomBarItem(
                 icon = Icons.AutoMirrored.Filled.Help,
                 label = "Aide",
-                onClick = { onHelpClick() }
+                onClick = {  }
             )
             BottomBarItem(
                 icon = Icons.Default.Settings,

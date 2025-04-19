@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.ksp)
     id("com.google.gms.google-services")
@@ -99,4 +99,6 @@ dependencies {
     // Authentication
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+
+    implementation(libs.kotlinx.serialization.json)
 }

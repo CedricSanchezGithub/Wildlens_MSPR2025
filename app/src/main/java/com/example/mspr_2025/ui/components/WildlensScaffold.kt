@@ -18,18 +18,14 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.example.mspr_2025.core.navigation.WildlensNavigationCallbacks
 import com.example.mspr_2025.ui.theme.LocalToggleTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WildlensScaffold(
     modifier: Modifier = Modifier,
-    onHomeClick: () -> Unit,
-    onHelpClick: () -> Unit = {},
-    onSettingsClick: () -> Unit,
-    onProfileClick: () -> Unit = {},
-    onLoginClick: () -> Unit,
-    onAnimalsClick: () -> Unit,
+    navigationCallbacks: WildlensNavigationCallbacks,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     content: @Composable (PaddingValues) -> Unit
 ) {
@@ -49,18 +45,17 @@ fun WildlensScaffold(
         floatingActionButtonPosition = FabPosition.Center,
         topBar = {
             WildlensTopBar(
-                onSettingsClick = onSettingsClick,
-                onProfileClick = onProfileClick,
-                onLoginClick = onLoginClick,
+                onSettingsClick = navigationCallbacks.onSettingsClick,
+                onProfileClick = navigationCallbacks.onProfileClick,
+                onLoginClick = navigationCallbacks.onLoginClick,
                 onClickTheme = { toggleTheme() },
             )
         },
         bottomBar = {
             WildlensBottomBar(
-                onHomeClick = onHomeClick,
-                onAnimalsClick = onAnimalsClick,
-                onHelpClick = onHelpClick,
-                onSettingsClick = onSettingsClick
+                onHomeClick = navigationCallbacks.onHomeClick,
+                onAnimalsClick = navigationCallbacks.onAnimalsClick,
+                onSettingsClick = navigationCallbacks.onSettingsClick
             )
         }
     ) { paddingValues ->

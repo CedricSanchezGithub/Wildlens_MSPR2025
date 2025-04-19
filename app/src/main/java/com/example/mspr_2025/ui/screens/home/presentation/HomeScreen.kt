@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mspr_2025.core.navigation.NavViewModel
+import com.example.mspr_2025.core.navigation.WildlensNavigationCallbacks
 import com.example.mspr_2025.ui.components.WildlensScaffold
 import com.example.mspr_2025.ui.screens.home.state.HomeState
 import com.example.mspr_2025.ui.screens.home.state.HomeViewModel
@@ -25,10 +26,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     navViewModel: NavViewModel = hiltViewModel(),
-    onSettingsClick: () -> Unit,
-    onLoginClick: () -> Unit,
-    onHomeClick: () -> Unit,
-    onAnimalsClick: () -> Unit,
+    navigationCallbacks: WildlensNavigationCallbacks
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -40,10 +38,8 @@ fun HomeScreen(
     }
 
     WildlensScaffold(
-        onSettingsClick = onSettingsClick,
-        onLoginClick = onLoginClick,
-        onHomeClick = onHomeClick,
-        onAnimalsClick = onAnimalsClick,
+        navigationCallbacks = navigationCallbacks,
+        snackbarHostState = snackbarHostState,
     ) { padding ->
         Column(
             modifier = modifier

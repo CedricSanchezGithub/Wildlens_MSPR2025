@@ -14,23 +14,21 @@ fun MainGraph(
 ) {
     val route by router.route.collectAsStateWithLifecycle()
 
+    val navigation = WildlensNavigationCallbacks(
+        onHomeClick = { router.navigate(AppRoute.Home) },
+        onLoginClick = { router.navigate(AppRoute.Auth) },
+        onLogoutClick = { /* si besoin */ },
+        onSettingsClick = { router.navigate(AppRoute.Settings) },
+        onAnimalsClick = { router.navigate(AppRoute.Animals) },
+        onProfileClick = { router.navigate(AppRoute.Profile) }
+    )
+
     when (route) {
-        is AppRoute.Auth -> AuthScreen(
-            onHomeClick = { router.navigate(AppRoute.Home) }
-            )
+        is AppRoute.Auth -> AuthScreen(navigationCallbacks = navigation)
 
-        is AppRoute.Home -> HomeScreen(
-            onSettingsClick = { router.navigate(AppRoute.Settings) },
-            onLoginClick = { router.navigate(AppRoute.Auth) },
-            onHomeClick = { router.navigate(AppRoute.Home) },
-            onAnimalsClick = { router.navigate(AppRoute.Animals) }
-        )
+        is AppRoute.Home -> HomeScreen(navigationCallbacks = navigation)
 
-        is AppRoute.Animals -> AnimalsScreen(
-            onSettingsClick = { router.navigate(AppRoute.Settings) },
-            onLoginClick = { router.navigate(AppRoute.Auth) },
-            onHomeClick = { router.navigate(AppRoute.Home) },
-        )
+        is AppRoute.Animals -> AnimalsScreen(navigationCallbacks = navigation)
 
         is AppRoute.Favorites -> TODO()
         is AppRoute.Profile -> TODO()

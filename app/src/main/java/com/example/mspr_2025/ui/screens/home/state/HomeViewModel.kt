@@ -2,7 +2,7 @@ package com.example.mspr_2025.ui.screens.home.state
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mspr_2025.data.repository.MessageRepository
+import com.example.mspr_2025.data.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: MessageRepository
+    private val repository: Repository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<HomeState<String>>(HomeState.Loading)
