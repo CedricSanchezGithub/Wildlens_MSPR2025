@@ -6,6 +6,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mspr_2025.ui.screens.auth.presentation.AuthScreen
 import com.example.mspr_2025.ui.screens.home.presentation.HomeScreen
 import androidx.compose.runtime.getValue
+import com.example.mspr_2025.ui.screens.animals.presentation.AnimalsScreen
 
 @Composable
 fun MainGraph(
@@ -25,10 +26,14 @@ fun MainGraph(
             onAnimalsClick = { router.navigate(AppRoute.Animals) }
         )
 
-        is AppRoute.Animals -> {router.navigate(AppRoute.Animals)}
+        is AppRoute.Animals -> AnimalsScreen(
+            onSettingsClick = { router.navigate(AppRoute.Settings) },
+            onLoginClick = { router.navigate(AppRoute.Auth) },
+            onHomeClick = { router.navigate(AppRoute.Home) },
+        )
 
-        AppRoute.Favorites -> TODO()
-        AppRoute.Profile -> TODO()
-        AppRoute.Settings -> TODO()
+        is AppRoute.Favorites -> TODO()
+        is AppRoute.Profile -> TODO()
+        is AppRoute.Settings -> TODO()
     }
 }
