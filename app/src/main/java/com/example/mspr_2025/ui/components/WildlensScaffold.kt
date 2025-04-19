@@ -59,13 +59,7 @@ fun WildlensScaffold(
             )
         }
     ) { paddingValues ->
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
             content(paddingValues)
-        }
     }
 }
 

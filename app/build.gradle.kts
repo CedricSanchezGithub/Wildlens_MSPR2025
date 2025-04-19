@@ -51,9 +51,9 @@ android {
 
 dependencies {
 
-    // Plus d'icones
+    // Plus d'icones & de fonts
     implementation(libs.androidx.material.icons.extended)
-
+    implementation(libs.androidx.ui.text.google.fonts)
     // Core AndroidX
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
