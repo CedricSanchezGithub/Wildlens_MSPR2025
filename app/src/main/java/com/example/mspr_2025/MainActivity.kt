@@ -12,7 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.example.mspr_2025.ui.navigation.WildlensNavHost
+import com.example.mspr_2025.core.navigation.MainGraph
 import com.example.mspr_2025.ui.theme.LocalToggleTheme
 import com.example.mspr_2025.ui.theme.MSPR_2025Theme
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
             CompositionLocalProvider(LocalToggleTheme provides { isDarkTheme = !isDarkTheme }) {
                 MSPR_2025Theme(darkTheme = isDarkTheme) {
                     Surface(modifier = Modifier.fillMaxSize()) {
-                        WildlensNavHost()
+                        MainGraph()
                     }
                 }
             }

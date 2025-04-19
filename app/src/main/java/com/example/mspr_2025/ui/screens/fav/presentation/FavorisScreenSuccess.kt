@@ -1,4 +1,4 @@
-package com.example.mspr_2025.ui.screens.fav
+package com.example.mspr_2025.ui.screens.fav.presentation
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
