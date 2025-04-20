@@ -30,7 +30,10 @@ fun WildlensBottomBar(
     onAnimalsClick: () -> Unit,
     onMyScansClick: () -> Unit,
 ) {
-    BottomAppBar {
+    BottomAppBar(
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

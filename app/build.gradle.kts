@@ -11,6 +11,11 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+configurations.all {
+    exclude(group = "com.google.ai.edge.litert", module = "litert-api")
+    exclude(group = "com.google.ai.edge.litert", module = "litert-support-api")
+}
+
 android {
     namespace = "com.example.mspr_2025"
     compileSdk = 35
@@ -104,9 +109,9 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
 
-    // Tflite
-    implementation(libs.tflite)
+    // TFLite : Vision + Support
     implementation(libs.tflite.support)
     implementation(libs.tflite.task)
+
 
 }

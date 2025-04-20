@@ -1,5 +1,6 @@
 package com.example.mspr_2025.ui.screens.animals.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -28,7 +29,8 @@ fun AnimalsScreen(
         Column(
             modifier = modifier
                 .padding(padding)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.primary),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
