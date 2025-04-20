@@ -1,7 +1,7 @@
 package com.example.mspr_2025.data.repository
 
 import android.content.Context
-import com.example.mspr_2025.data.models.Animal
+import com.example.mspr_2025.data.models.AnimalDataModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -22,7 +22,7 @@ class AnimalRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : AnimalRepository {
 
-    override suspend fun getAnimals(): List<Animal> = withContext(Dispatchers.IO) {
+    override suspend fun getAnimals(): List<AnimalDataModel> = withContext(Dispatchers.IO) {
         val json = context.assets.open("getmetadata.json").bufferedReader().use { it.readText() }
         Json.decodeFromString(json)
     }

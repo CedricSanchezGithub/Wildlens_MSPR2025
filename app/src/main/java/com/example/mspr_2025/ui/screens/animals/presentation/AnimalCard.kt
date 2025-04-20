@@ -12,23 +12,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.mspr_2025.data.models.Animal
+import com.example.mspr_2025.data.models.AnimalDataModel
 
 @Composable
-fun AnimalCard(animal: Animal) {
+fun AnimalCard(animalDataModel: AnimalDataModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = animal.frenchName, style = MaterialTheme.typography.titleLarge)
-            Text(text = animal.latinName, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+            Text(text = animalDataModel.frenchName, style = MaterialTheme.typography.titleLarge)
+            Text(text = animalDataModel.latinName, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.height(8.dp))
-            Text(text = animal.description, style = MaterialTheme.typography.bodyMedium)
+            Text(text = animalDataModel.description, style = MaterialTheme.typography.bodyMedium)
             Spacer(Modifier.height(4.dp))
-            Text(text = "Localisation : ${animal.location}", style = MaterialTheme.typography.labelSmall)
-            Text(text = "Population estimée : ${animal.estimatedPopulation}", style = MaterialTheme.typography.labelSmall)
+            Text(text = "Localisation : ${animalDataModel.location}", style = MaterialTheme.typography.labelSmall)
+            Text(text = "Population estimée : ${animalDataModel.estimatedPopulation}", style = MaterialTheme.typography.labelSmall)
         }
     }
 }

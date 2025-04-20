@@ -5,20 +5,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mspr_2025.core.navigation.NavViewModel
+import com.example.mspr_2025.ui.screens.home.state.HomeViewModel
 
 @Composable
-fun HomeScreenSuccess(text: String){
+fun HomeScreenSuccess(
+    text: String,
+){
 
-        val navViewModel: NavViewModel = hiltViewModel()
-        val authManager = navViewModel.authManager
-        val isLoggedIn by authManager.isLoggedIn.collectAsStateWithLifecycle()
+    val navViewModel: NavViewModel = hiltViewModel()
+    val viewModel: HomeViewModel = hiltViewModel()
+    val authManager = navViewModel.authManager
+    val isLoggedIn by authManager.isLoggedIn.collectAsStateWithLifecycle()
+    val user by viewModel.user.collectAsStateWithLifecycle()
 
+    if (isLoggedIn) {
         Text(text = text)
-        if(isLoggedIn) {
-            Text("Connecté")
-        } else {
-            Text("Déconnecté")
-        }
+        user?.let {
+            Text("Bonjour ${it.firstName} ${it.lastName} 👋")
+        } ?: Text("Chargement des infos utilisateur...")
+    } else {
+        Text("Déconnecté")
     }
+}
 

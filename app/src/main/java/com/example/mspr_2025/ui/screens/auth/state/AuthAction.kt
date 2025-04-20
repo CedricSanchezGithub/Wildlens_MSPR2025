@@ -5,5 +5,7 @@ sealed interface AuthAction {
     data class PasswordChanged(val password: String) : AuthAction
     data class Submit(val mode: AuthMode) : AuthAction
     data class SwitchMode(val mode: AuthMode) : AuthAction
+    data class FirstNameChanged(val firstName: String) : AuthAction
+    data class LastNameChanged(val lastName: String) : AuthAction
     object TogglePasswordVisibility : AuthAction
 }

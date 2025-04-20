@@ -36,7 +36,7 @@ fun AnimalsScreen(
         ) {
             when (val state = uiState) {
                 is AnimalsState.Loading -> CircularProgressIndicator()
-                is AnimalsState.Success -> AnimalsScreenSuccess(state.animals)
+                is AnimalsState.Success -> AnimalsScreenSuccess(state.animalDataModels)
                 is AnimalsState.Error -> Text(
                     text = state.message,
                     color = MaterialTheme.colorScheme.error

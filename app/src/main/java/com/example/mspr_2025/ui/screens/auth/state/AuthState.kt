@@ -11,6 +11,8 @@ sealed class AuthUiState {
 data class AuthFormState(
     val email: String = "",
     val password: String = "",
-    val mode: AuthMode = AuthMode.LOGIN,
-    val isPasswordVisible: Boolean = false
+    val firstName: String = "",
+    val lastName: String = "",
+    val isPasswordVisible: Boolean = false,
+    val mode: AuthMode = AuthMode.LOGIN
 )

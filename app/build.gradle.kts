@@ -103,15 +103,15 @@ dependencies {
     implementation (libs.androidx.camera.view)
     implementation (libs.androidx.camera.extensions)
 
-    // Authentication
+    // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
-
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.firebase.firestore)
 
     // TFLite : Vision + Support
     implementation(libs.tflite.support)
     implementation(libs.tflite.task)
 
+    implementation(libs.kotlinx.serialization.json)
 
 }

@@ -3,7 +3,6 @@ package com.example.mspr_2025.ui.screens.animals.state
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mspr_2025.data.models.Animal
 import com.example.mspr_2025.data.repository.AnimalRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

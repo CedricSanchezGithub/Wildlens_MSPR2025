@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Animal(
+data class AnimalDataModel(
     @SerialName("idEspece") val id: Int,
     @SerialName("famille") val family: String,
     @SerialName("nomLatin") val latinName: String,

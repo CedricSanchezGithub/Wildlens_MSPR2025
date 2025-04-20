@@ -1,6 +1,6 @@
 package com.example.mspr_2025.data.repository
 
-import com.example.mspr_2025.data.models.Animal
+import com.example.mspr_2025.data.models.AnimalDataModel
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {
@@ -8,5 +8,5 @@ interface Repository {
 }
 
 interface AnimalRepository {
-    suspend fun getAnimals(): List<Animal>
+    suspend fun getAnimals(): List<AnimalDataModel>
 }

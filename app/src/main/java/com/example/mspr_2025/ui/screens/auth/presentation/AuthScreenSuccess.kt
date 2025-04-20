@@ -1,5 +1,6 @@
 package com.example.mspr_2025.ui.screens.auth.presentation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,6 +28,30 @@ fun AuthScreenSuccess(
     form: AuthFormState,
     onAction: (AuthAction) -> Unit
 ) {
+    if(form.mode == AuthMode.REGISTER){
+
+        OutlinedTextField(
+            value = form.firstName,
+            onValueChange = { onAction(AuthAction.FirstNameChanged(it)) },
+            label = { Text("Prénom") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+        )
+
+        Spacer(Modifier.height(16.dp))
+        OutlinedTextField(
+            value = form.lastName,
+            onValueChange = { onAction(AuthAction.LastNameChanged(it)) },
+            label = { Text("Nom") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
+        )
+    }
+
+    Spacer(Modifier.height(16.dp))
+
     OutlinedTextField(
         value = form.email,
         onValueChange = { onAction(AuthAction.EmailChanged(it)) },
