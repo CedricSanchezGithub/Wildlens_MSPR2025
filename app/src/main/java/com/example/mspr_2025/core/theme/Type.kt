@@ -1,4 +1,4 @@
-package com.example.mspr_2025.ui.theme
+package com.example.mspr_2025.core.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily

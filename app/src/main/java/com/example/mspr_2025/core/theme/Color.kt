@@ -1,4 +1,4 @@
-package com.example.mspr_2025.ui.theme
+package com.example.mspr_2025.core.theme
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF1E6B4F)

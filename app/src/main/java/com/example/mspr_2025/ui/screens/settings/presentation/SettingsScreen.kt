@@ -1,4 +1,4 @@
-package com.example.mspr_2025.ui.screens.animals.presentation
+package com.example.mspr_2025.ui.screens.settings.presentation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -6,23 +6,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.mspr_2025.ui.components.WildlensScaffold
-import com.example.mspr_2025.ui.screens.animals.state.AnimalsState
-import com.example.mspr_2025.ui.screens.animals.state.AnimalsViewModel
-import androidx.compose.runtime.getValue
 import com.example.mspr_2025.core.navigation.WildlensNavigationCallbacks
+import com.example.mspr_2025.ui.components.WildlensScaffold
+import com.example.mspr_2025.ui.screens.settings.state.SettingsState
+import com.example.mspr_2025.ui.screens.settings.state.SettingsViewModel
 
 @Composable
-fun AnimalsScreen(
+fun SettingsScreen(
     modifier: Modifier = Modifier,
-    viewModel: AnimalsViewModel = hiltViewModel(),
+    viewModel: SettingsViewModel = hiltViewModel(),
     navigationCallbacks: WildlensNavigationCallbacks,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     WildlensScaffold(
-        snackbarHostState = snackbarHostState,
+        snackbarHostState = remember { SnackbarHostState() },
         navigationCallbacks = navigationCallbacks
     ) { padding ->
         Column(
@@ -33,9 +32,9 @@ fun AnimalsScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             when (val state = uiState) {
-                is AnimalsState.Loading -> CircularProgressIndicator()
-                is AnimalsState.Success -> AnimalsScreenSuccess(state.animals)
-                is AnimalsState.Error -> Text(
+                is SettingsState.Loading -> CircularProgressIndicator()
+                is SettingsState.Success -> SettingsScreenSuccess(uiModel = state)
+                is SettingsState.Error -> Text(
                     text = state.message,
                     color = MaterialTheme.colorScheme.error
                 )

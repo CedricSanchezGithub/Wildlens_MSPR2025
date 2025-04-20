@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Pets
+import androidx.compose.material.icons.filled.Screenshot
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
@@ -27,7 +28,7 @@ import androidx.compose.ui.unit.dp
 fun WildlensBottomBar(
     onHomeClick: () -> Unit,
     onAnimalsClick: () -> Unit,
-    onSettingsClick: () -> Unit
+    onMyScansClick: () -> Unit,
 ) {
     BottomAppBar {
         Row(
@@ -47,14 +48,9 @@ fun WildlensBottomBar(
                 onClick = { onAnimalsClick() }
             )
             BottomBarItem(
-                icon = Icons.AutoMirrored.Filled.Help,
-                label = "Aide",
-                onClick = {  }
-            )
-            BottomBarItem(
-                icon = Icons.Default.Settings,
-                label = "Paramètres",
-                onClick = { onSettingsClick() }
+                icon = Icons.Default.Screenshot,
+                label = "Mes scans",
+                onClick = { onMyScansClick() }
             )
         }
     }

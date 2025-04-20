@@ -54,6 +54,7 @@ dependencies {
     // Plus d'icones & de fonts
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.ui.text.google.fonts)
+
     // Core AndroidX
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -66,6 +67,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.compose.animation)
 
     // Hilt DI
     implementation(libs.dagger.hilt.android)
@@ -101,4 +103,10 @@ dependencies {
     implementation(libs.firebase.auth)
 
     implementation(libs.kotlinx.serialization.json)
+
+    // Tflite
+    implementation(libs.tflite)
+    implementation(libs.tflite.support)
+    implementation(libs.tflite.task)
+
 }

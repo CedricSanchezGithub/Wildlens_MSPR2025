@@ -5,10 +5,11 @@ package com.example.mspr_2025.core.navigation
  * Permet d'éviter de les répéter dans chaque écran.
  */
 data class WildlensNavigationCallbacks(
-    val onHomeClick: () -> Unit = {},
-    val onLoginClick: () -> Unit = {},
-    val onLogoutClick: () -> Unit = {},
-    val onSettingsClick: () -> Unit = {},
-    val onAnimalsClick: () -> Unit = {},
-    val onProfileClick: () -> Unit = {},
+    val onHomeClick: () -> Unit,
+    val onLoginClick: () -> Unit,
+    val onLogoutClick: () -> Unit,
+    val onSettingsClick: () -> Unit,
+    val onAnimalsClick: () -> Unit,
+    val onProfileClick: () -> Unit,
+    val onMyScansClick: () -> Unit,
 )

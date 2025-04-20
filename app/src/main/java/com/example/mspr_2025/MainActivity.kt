@@ -13,8 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.mspr_2025.core.navigation.MainGraph
-import com.example.mspr_2025.ui.theme.LocalToggleTheme
-import com.example.mspr_2025.ui.theme.MSPR_2025Theme
+import com.example.mspr_2025.core.theme.LocalToggleTheme
+import com.example.mspr_2025.core.theme.MSPR_2025Theme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

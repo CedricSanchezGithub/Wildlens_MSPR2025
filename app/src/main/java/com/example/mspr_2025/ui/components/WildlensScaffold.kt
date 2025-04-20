@@ -1,9 +1,6 @@
 package com.example.mspr_2025.ui.components
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddAPhoto
@@ -19,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.mspr_2025.core.navigation.WildlensNavigationCallbacks
-import com.example.mspr_2025.ui.theme.LocalToggleTheme
+import com.example.mspr_2025.core.theme.LocalToggleTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,7 +52,7 @@ fun WildlensScaffold(
             WildlensBottomBar(
                 onHomeClick = navigationCallbacks.onHomeClick,
                 onAnimalsClick = navigationCallbacks.onAnimalsClick,
-                onSettingsClick = navigationCallbacks.onSettingsClick
+                onMyScansClick = navigationCallbacks.onMyScansClick,
             )
         }
     ) { paddingValues ->
