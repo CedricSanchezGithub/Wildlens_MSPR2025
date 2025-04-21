@@ -17,11 +17,11 @@ configurations.all {
 }
 
 android {
-    namespace = "com.example.mspr_2025"
+    namespace = "com.wildlens.mspr_2025"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.mspr_2025"
+        applicationId = "com.wildlens.mspr_2025"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
