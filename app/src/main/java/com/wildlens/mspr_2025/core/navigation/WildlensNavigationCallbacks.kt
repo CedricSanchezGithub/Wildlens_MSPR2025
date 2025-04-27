@@ -12,4 +12,5 @@ data class WildlensNavigationCallbacks(
     val onAnimalsClick: () -> Unit,
     val onProfileClick: () -> Unit,
     val onMyScansClick: () -> Unit,
+    val onIAClick: () -> Unit
 )

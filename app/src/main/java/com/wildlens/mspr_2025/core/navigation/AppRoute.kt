@@ -16,6 +16,7 @@ sealed interface AppRoute {
     object Profile : AppRoute
     object Animals: AppRoute
     object MyScans: AppRoute
+    object IA: AppRoute
 }
 
 @OptIn(ExperimentalAnimationApi::class)

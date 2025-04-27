@@ -1,12 +1,16 @@
 package com.wildlens.mspr_2025.ui.components
 
+import android.R.attr.text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddChart
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material.icons.filled.Screenshot
@@ -30,6 +34,7 @@ fun WildlensBottomBar(
     onHomeClick: () -> Unit,
     onAnimalsClick: () -> Unit,
     onMyScansClick: () -> Unit,
+    onIAClick: () -> Unit
 ) {
     BottomAppBar(
         containerColor = MaterialTheme.colorScheme.primary,
@@ -37,9 +42,7 @@ fun WildlensBottomBar(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
-                .clip(shape = CircleShape),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             BottomBarItem(
@@ -57,6 +60,11 @@ fun WildlensBottomBar(
                 label = "Mes scans",
                 onClick = { onMyScansClick() }
             )
+            BottomBarItem(
+                icon = Icons.Default.AddChart,
+                label = "I.A",
+                onClick = { onIAClick() }
+            )
         }
     }
 }
@@ -70,7 +78,7 @@ fun BottomBarItem(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        IconButton(onClick = onClick) {
+        IconButton(onClick = onClick){
             Icon(icon, contentDescription = label)
         }
         Text(

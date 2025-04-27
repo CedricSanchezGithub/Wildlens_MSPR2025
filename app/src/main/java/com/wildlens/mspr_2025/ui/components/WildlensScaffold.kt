@@ -53,6 +53,7 @@ fun WildlensScaffold(
                 onHomeClick = navigationCallbacks.onHomeClick,
                 onAnimalsClick = navigationCallbacks.onAnimalsClick,
                 onMyScansClick = navigationCallbacks.onMyScansClick,
+                onIAClick = navigationCallbacks.onIAClick
             )
         }
     ) { paddingValues ->

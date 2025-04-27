@@ -13,12 +13,11 @@ import com.wildlens.mspr_2025.data.models.AnimalDataModel
 
 @Composable
 fun AnimalsScreenSuccess(animalDataModels: List<AnimalDataModel>) {
-//    Row(
-//        modifier = Modifier.padding(8.dp)
-//    ){
-//        Text("Informations sur les animaux de la base de données.")
-//        Text("Cliquez pour en savoir plus !")
-//    }
+    Row(
+        modifier = Modifier.padding(8.dp)
+    ){
+        Text("Informations sur les animaux de la base de données.")
+    }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

@@ -8,6 +8,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.wildlens.mspr_2025.ui.screens.auth.presentation.AuthScreen
 import com.wildlens.mspr_2025.ui.screens.home.presentation.HomeScreen
 import androidx.compose.runtime.getValue
+import com.wildlens.mspr_2025.ui.screens.iascreen.presentation.IAScreen
 import com.wildlens.mspr_2025.ui.screens.animals.presentation.AnimalsScreen
 import com.wildlens.mspr_2025.ui.screens.myscans.presentation.MyScansScreen
 import com.wildlens.mspr_2025.ui.screens.settings.presentation.SettingsScreen
@@ -27,6 +28,7 @@ fun MainGraph(
         onProfileClick = { router.navigate(AppRoute.Profile) },
         onMyScansClick = { router.navigate(AppRoute.MyScans) },
         onLogoutClick = { router.navigate(AppRoute.Home) },
+        onIAClick = { router.navigate(AppRoute.IA) }
 
     )
 
@@ -43,6 +45,7 @@ fun MainGraph(
             is AppRoute.Animals -> AnimalsScreen(navigationCallbacks = navigation)
             is AppRoute.MyScans -> MyScansScreen(navigationCallbacks = navigation)
             is AppRoute.Settings -> SettingsScreen(navigationCallbacks = navigation)
+            is AppRoute.IA -> IAScreen(navigationCallbacks = navigation)
             is AppRoute.Favorites -> TODO()
             is AppRoute.Profile -> TODO()
         }
