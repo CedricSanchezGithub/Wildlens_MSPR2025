@@ -1,6 +1,5 @@
 package com.wildlens.mspr_2025.core.navigation.di
 
-import com.wildlens.mspr_2025.core.navigation.AppRouter
 import com.wildlens.mspr_2025.core.navigation.StartDestinationProvider
 import dagger.Module
 import dagger.Provides
@@ -28,16 +27,4 @@ object NavigationModule {
     @Singleton
     fun provideStartDestinationProvider(): StartDestinationProvider = StartDestinationProvider()
 
-    /**
-     * Fournit une instance unique de AppRouter, initialisée avec la route déterminée
-     * dynamiquement au démarrage de l'application.
-     */
-    @Provides
-    @Singleton
-    fun provideAppRouter(
-        startDestinationProvider: StartDestinationProvider
-    ): AppRouter {
-        val initialRoute = startDestinationProvider.getStartDestination()
-        return AppRouter(initialRoute)
-    }
 }

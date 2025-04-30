@@ -1,53 +1,41 @@
 package com.wildlens.mspr_2025.core.navigation
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.wildlens.mspr_2025.ui.screens.animals.presentation.AnimalsScreen
 import com.wildlens.mspr_2025.ui.screens.auth.presentation.AuthScreen
 import com.wildlens.mspr_2025.ui.screens.home.presentation.HomeScreen
-import androidx.compose.runtime.getValue
 import com.wildlens.mspr_2025.ui.screens.iascreen.presentation.IAScreen
-import com.wildlens.mspr_2025.ui.screens.animals.presentation.AnimalsScreen
 import com.wildlens.mspr_2025.ui.screens.myscans.presentation.MyScansScreen
+import com.wildlens.mspr_2025.ui.screens.profile.presentation.ProfileScreen
 import com.wildlens.mspr_2025.ui.screens.settings.presentation.SettingsScreen
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainGraph(
-    router: AppRouter = hiltViewModel<NavViewModel>().router
+    navController: NavHostController = rememberNavController(),
+    startDestination: String
 ) {
-    val route by router.route.collectAsStateWithLifecycle()
-
-    val navigation = WildlensNavigationCallbacks(
-        onHomeClick = { router.navigate(AppRoute.Home) },
-        onLoginClick = { router.navigate(AppRoute.Auth) },
-        onSettingsClick = { router.navigate(AppRoute.Settings) },
-        onAnimalsClick = { router.navigate(AppRoute.Animals) },
-        onProfileClick = { router.navigate(AppRoute.Profile) },
-        onMyScansClick = { router.navigate(AppRoute.MyScans) },
-        onLogoutClick = { router.navigate(AppRoute.Home) },
-        onIAClick = { router.navigate(AppRoute.IA) }
-
-    )
-
-    AnimatedContent(
-        targetState = route,
-        transitionSpec = {
-            targetState.transitionSpec()
-        },
-        label = "RouteTransition"
-    ) { currentRoute ->
-        when (currentRoute) {
-            is AppRoute.Auth -> AuthScreen(navigationCallbacks = navigation)
-            is AppRoute.Home -> HomeScreen(navigationCallbacks = navigation)
-            is AppRoute.Animals -> AnimalsScreen(navigationCallbacks = navigation)
-            is AppRoute.MyScans -> MyScansScreen(navigationCallbacks = navigation)
-            is AppRoute.Settings -> SettingsScreen(navigationCallbacks = navigation)
-            is AppRoute.IA -> IAScreen(navigationCallbacks = navigation)
-            is AppRoute.Favorites -> TODO()
-            is AppRoute.Profile -> TODO()
-        }
+    NavHost(
+        navController = navController,
+        startDestination = startDestination
+    ) {
+        composable(AppRoute.Auth.route) { AuthScreen(navController = navController) }
+        composable(AppRoute.Home.route) { HomeScreen(
+            navController = navController,
+            onLogout = {
+                navController.navigate(AppRoute.Auth.route) {
+                    popUpTo(AppRoute.Home.route) { inclusive = true }
+                }
+            }
+        ) }
+        composable(AppRoute.Settings.route) { SettingsScreen(navController = navController) }
+        composable(AppRoute.Animals.route) { AnimalsScreen(navController = navController) }
+        composable(AppRoute.MyScans.route) { MyScansScreen(navController = navController) }
+        composable(AppRoute.IA.route) { IAScreen(navController = navController) }
+        composable(AppRoute.Profile.route) { ProfileScreen(navController = navController) }
     }
 }
+

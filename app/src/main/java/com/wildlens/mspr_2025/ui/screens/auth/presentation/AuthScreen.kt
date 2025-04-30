@@ -15,8 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.wildlens.mspr_2025.core.navigation.NavViewModel
-import com.wildlens.mspr_2025.core.navigation.WildlensNavigationCallbacks
 import com.wildlens.mspr_2025.ui.components.WildlensScaffold
 import com.wildlens.mspr_2025.ui.screens.auth.state.AuthUiState
 import com.wildlens.mspr_2025.ui.screens.auth.state.AuthViewModel
@@ -25,7 +25,7 @@ import com.wildlens.mspr_2025.ui.screens.auth.state.AuthViewModel
 fun AuthScreen(
     viewModel: AuthViewModel = hiltViewModel(),
     navViewModel: NavViewModel = hiltViewModel(),
-    navigationCallbacks: WildlensNavigationCallbacks
+    navController: NavHostController
 ) {
     val formState by viewModel.form.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
@@ -45,8 +45,7 @@ fun AuthScreen(
 
     WildlensScaffold(
         snackbarHostState = snackbarHostState,
-        navigationCallbacks = navigationCallbacks
-
+        navController = navController,
     ) { padding ->
         Column(
             modifier = Modifier.padding(padding).fillMaxSize(),

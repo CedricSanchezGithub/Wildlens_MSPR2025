@@ -1,4 +1,4 @@
-package com.wildlens.mspr_2025.ui.screens.myscans.presentation
+package com.wildlens.mspr_2025.ui.screens.profile.presentation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -8,22 +8,18 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.wildlens.mspr_2025.ui.components.WildlensScaffold
-import com.wildlens.mspr_2025.ui.screens.myscans.state.MyScansState
-import com.wildlens.mspr_2025.ui.screens.myscans.state.MyScansViewModel
+import com.wildlens.mspr_2025.ui.screens.profile.state.ProfileState
+import com.wildlens.mspr_2025.ui.screens.profile.state.ProfileViewModel
 
 @Composable
-fun MyScansScreen(
+fun ProfileScreen(
     modifier: Modifier = Modifier,
-    viewModel: MyScansViewModel = hiltViewModel(),
-    navController: NavHostController,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    viewModel: ProfileViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    WildlensScaffold(
-        snackbarHostState = snackbarHostState,
-        navController = navController
-    ) { padding ->
+    WildlensScaffold(navController = navController) { padding ->
         Column(
             modifier = modifier
                 .padding(padding)
@@ -32,9 +28,9 @@ fun MyScansScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             when (val state = uiState) {
-                is MyScansState.Loading -> CircularProgressIndicator()
-                is MyScansState.Success -> MyScansScreenSuccess(uiModel = state)
-                is MyScansState.Error -> Text(
+                is ProfileState.Loading -> CircularProgressIndicator()
+                is ProfileState.Success -> ProfileScreenSuccess(uiModel = state)
+                is ProfileState.Error -> Text(
                     text = state.message,
                     color = MaterialTheme.colorScheme.error
                 )

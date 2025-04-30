@@ -4,8 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Brightness6
@@ -28,26 +26,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.wildlens.mspr_2025.R
-import com.wildlens.mspr_2025.core.navigation.NavViewModel
+import com.wildlens.mspr_2025.core.navigation.AppRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WildlensTopBar(
-    onSettingsClick: () -> Unit,
-    onProfileClick: () -> Unit,
-    onLoginClick: () -> Unit,
+    onLogoutClick: () -> Unit,
     onClickTheme: () -> Unit,
+    isLoggedIn: Boolean,
+    navController: NavController
 ) {
 
-    val navViewModel: NavViewModel = hiltViewModel()
-    val authManager = navViewModel.authManager
-    val isLoggedIn by authManager.isLoggedIn.collectAsStateWithLifecycle()
     var expanded by remember { mutableStateOf(false) }
 
     TopAppBar(
@@ -89,7 +82,7 @@ fun WildlensTopBar(
                     text = { Text("Profil") },
                     onClick = {
                         expanded = false
-                        onProfileClick()
+                        navController.navigate(AppRoute.Profile.route)
                     }
                 )
                 DropdownMenuItem(
@@ -102,7 +95,7 @@ fun WildlensTopBar(
                     text = { Text("Paramètres") },
                     onClick = {
                         expanded = false
-                        onSettingsClick()
+                        navController.navigate(AppRoute.Settings.route)
                     }
                 )
                 DropdownMenuItem(
@@ -128,9 +121,9 @@ fun WildlensTopBar(
                     onClick = {
                         expanded = false
                         if (isLoggedIn) {
-                            navViewModel.logout()
+                            onLogoutClick()
                         } else {
-                            onLoginClick()
+                            navController.navigate(AppRoute.Auth.route)
                         }
                     }
                 )

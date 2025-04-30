@@ -11,16 +11,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NavViewModel @Inject constructor(
-    val router: AppRouter,
-    val authManager: AuthManager
+    private val authManager: AuthManager,
 ) : ViewModel() {
 
     private val _uiEvents = MutableSharedFlow<String>()
     val uiEvents = _uiEvents.asSharedFlow()
 
     fun onLoginSuccess() {
-        router.navigate(AppRoute.Home)
-
         viewModelScope.launch {
             _uiEvents.emit("Vous êtes connecté.")
         }
@@ -28,11 +25,8 @@ class NavViewModel @Inject constructor(
 
     fun logout() {
         authManager.logout()
-        router.navigate(AppRoute.Home)
-
         viewModelScope.launch {
             _uiEvents.emit("Vous avez été déconnecté.")
         }
     }
-
 }

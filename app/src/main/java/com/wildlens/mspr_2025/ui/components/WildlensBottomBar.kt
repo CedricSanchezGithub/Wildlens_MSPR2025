@@ -1,14 +1,9 @@
 package com.wildlens.mspr_2025.ui.components
 
-import android.R.attr.text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddChart
 import androidx.compose.material.icons.filled.Home
@@ -22,20 +17,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
-
+import androidx.navigation.NavController
+import com.wildlens.mspr_2025.core.navigation.AppRoute
 
 
 @Composable
-fun WildlensBottomBar(
-    onHomeClick: () -> Unit,
-    onAnimalsClick: () -> Unit,
-    onMyScansClick: () -> Unit,
-    onIAClick: () -> Unit
-) {
+fun WildlensBottomBar(navController : NavController) {
     BottomAppBar(
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -48,22 +36,22 @@ fun WildlensBottomBar(
             BottomBarItem(
                 icon = Icons.Default.Home,
                 label = "Accueil",
-                onClick = { onHomeClick() }
+                onClick = { navController.navigate(AppRoute.Home.route) }
             )
             BottomBarItem(
                 icon = Icons.Default.Pets,
                 label = "Animaux",
-                onClick = { onAnimalsClick() }
+                onClick = { navController.navigate(AppRoute.Animals.route) }
             )
             BottomBarItem(
                 icon = Icons.Default.Screenshot,
                 label = "Mes scans",
-                onClick = { onMyScansClick() }
+                onClick = { navController.navigate(AppRoute.MyScans.route) }
             )
             BottomBarItem(
                 icon = Icons.Default.AddChart,
                 label = "I.A",
-                onClick = { onIAClick() }
+                onClick = { navController.navigate(AppRoute.IA.route) }
             )
         }
     }

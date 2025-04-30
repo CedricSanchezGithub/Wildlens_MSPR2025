@@ -14,19 +14,18 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import com.wildlens.mspr_2025.core.navigation.WildlensNavigationCallbacks
-import com.wildlens.mspr_2025.core.theme.LocalToggleTheme
+import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WildlensScaffold(
-    modifier: Modifier = Modifier,
-    navigationCallbacks: WildlensNavigationCallbacks,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    onClickTheme: () -> Unit = {},
+    onLogoutClick: () -> Unit = {},
+    isLoggedIn: Boolean = false,
+    navController: NavController,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    val toggleTheme = LocalToggleTheme.current
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -42,22 +41,16 @@ fun WildlensScaffold(
         floatingActionButtonPosition = FabPosition.Center,
         topBar = {
             WildlensTopBar(
-                onSettingsClick = navigationCallbacks.onSettingsClick,
-                onProfileClick = navigationCallbacks.onProfileClick,
-                onLoginClick = navigationCallbacks.onLoginClick,
-                onClickTheme = { toggleTheme() },
+                onClickTheme = onClickTheme,
+                isLoggedIn = isLoggedIn,
+                onLogoutClick = onLogoutClick,
+                navController = navController
             )
         },
         bottomBar = {
-            WildlensBottomBar(
-                onHomeClick = navigationCallbacks.onHomeClick,
-                onAnimalsClick = navigationCallbacks.onAnimalsClick,
-                onMyScansClick = navigationCallbacks.onMyScansClick,
-                onIAClick = navigationCallbacks.onIAClick
-            )
+            WildlensBottomBar(navController = navController)
         }
     ) { paddingValues ->
-            content(paddingValues)
+        content(paddingValues)
     }
 }
-

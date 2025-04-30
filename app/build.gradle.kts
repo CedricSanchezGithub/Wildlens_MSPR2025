@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.compose.animation)
+    implementation(libs.androidx.navigation.compose)
 
     // Hilt DI
     implementation(libs.dagger.hilt.android)

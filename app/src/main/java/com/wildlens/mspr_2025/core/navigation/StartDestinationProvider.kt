@@ -1,6 +1,5 @@
 package com.wildlens.mspr_2025.core.navigation
 
-import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
 /**
@@ -9,8 +8,7 @@ import javax.inject.Inject
  */
 
 class StartDestinationProvider @Inject constructor() {
-    fun getStartDestination(): AppRoute {
-        val user = FirebaseAuth.getInstance().currentUser
-        return if (user != null) AppRoute.Home else AppRoute.Auth
+    fun getStartDestination(): String {
+        return AppRoute.Home.route
     }
 }
