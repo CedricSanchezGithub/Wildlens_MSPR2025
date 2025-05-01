@@ -1,29 +1,40 @@
 package com.wildlens.mspr_2025.ui.screens.auth.state
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.wildlens.mspr_2025.core.events.BaseViewModel
+import com.wildlens.mspr_2025.core.events.UiEvent
 import com.wildlens.mspr_2025.data.models.UserDataModel
 import com.wildlens.mspr_2025.data.repository.UserRepository
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val userRepository: UserRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
-    private val auth = FirebaseAuth.getInstance()
+    private val auth: FirebaseAuth = Firebase.auth
 
     private val _form = MutableStateFlow(AuthFormState())
-    val form: StateFlow<AuthFormState> = _form
+    val form: StateFlow<AuthFormState> = _form.asStateFlow()
 
     private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState.Idle)
-    val uiState: StateFlow<AuthUiState> = _uiState
+    val uiState: StateFlow<AuthUiState> = _uiState.asStateFlow()
+
+    private val _events = MutableSharedFlow<AuthUiEvent>()
+    val events: SharedFlow<AuthUiEvent> = _events.asSharedFlow()
 
     fun onAction(action: AuthAction) {
         when (action) {
@@ -38,20 +49,19 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-
     private fun submit() {
         val formValue = _form.value
         _uiState.value = AuthUiState.Loading
 
-        val task = if (formValue.mode == AuthMode.LOGIN) {
-            auth.signInWithEmailAndPassword(formValue.email, formValue.password)
-        } else {
-            auth.createUserWithEmailAndPassword(formValue.email, formValue.password)
-        }
+        viewModelScope.launch {
+            try {
+                val authResult = if (formValue.mode == AuthMode.LOGIN) {
+                    auth.signInWithEmailAndPassword(formValue.email, formValue.password).await()
+                } else {
+                    auth.createUserWithEmailAndPassword(formValue.email, formValue.password).await()
+                }
 
-        task.addOnCompleteListener { result ->
-            if (result.isSuccessful) {
-                val uid = auth.currentUser?.uid
+                val uid = authResult.user?.uid
 
                 if (formValue.mode == AuthMode.REGISTER && uid != null) {
                     val user = UserDataModel(
@@ -60,17 +70,18 @@ class AuthViewModel @Inject constructor(
                         lastName = formValue.lastName,
                         email = formValue.email
                     )
-
-                    viewModelScope.launch {
-                        userRepository.createUser(user)
-                        _uiState.value = AuthUiState.Success
-                    }
-                } else {
-                    _uiState.value = AuthUiState.Success
+                    userRepository.createUser(user)
                 }
-            } else {
-                _uiState.value = AuthUiState.Error(result.exception?.message ?: "Erreur inconnue")
+
+                _uiState.value = AuthUiState.Loading
+                sendUiEvent(UiEvent.ShowSnackbar("Connexion réussie"))
+                sendUiEvent(UiEvent.Navigate("home", inclusive = true))
+
+            } catch (e: Exception) {
+                _uiState.value = AuthUiState.Error(e.message ?: "Erreur inconnue")
             }
         }
     }
 }
+
+

@@ -27,7 +27,7 @@ fun IAScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     WildlensScaffold(
-        navController = navController
+        navController = navController,
     ) { padding ->
         Column(
             modifier = modifier

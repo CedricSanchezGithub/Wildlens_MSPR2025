@@ -28,20 +28,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.wildlens.mspr_2025.R
 import com.wildlens.mspr_2025.core.navigation.AppRoute
+import com.wildlens.mspr_2025.core.session.SessionViewModel
+import com.wildlens.mspr_2025.core.theme.LocalToggleTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WildlensTopBar(
-    onLogoutClick: () -> Unit,
-    onClickTheme: () -> Unit,
     isLoggedIn: Boolean,
     navController: NavController
 ) {
 
     var expanded by remember { mutableStateOf(false) }
+    val toggleTheme = LocalToggleTheme.current
+    val sessionViewModel = hiltViewModel<SessionViewModel>()
 
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -103,9 +106,7 @@ fun WildlensTopBar(
                         Icon(Icons.Default.Brightness6, contentDescription = "Changer de thème")
                     },
                     text = { Text("Thème") },
-                    onClick = {
-                        onClickTheme()
-                    }
+                    onClick = { toggleTheme() }
                 )
 
                 DropdownMenuItem(
@@ -121,7 +122,7 @@ fun WildlensTopBar(
                     onClick = {
                         expanded = false
                         if (isLoggedIn) {
-                            onLogoutClick()
+                            sessionViewModel.logout()
                         } else {
                             navController.navigate(AppRoute.Auth.route)
                         }

@@ -26,7 +26,9 @@ fun SettingsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    WildlensScaffold(navController = navController) { padding ->
+    WildlensScaffold(
+        navController = navController,
+    ) { padding ->
         Column(
             modifier = modifier
                 .padding(padding)

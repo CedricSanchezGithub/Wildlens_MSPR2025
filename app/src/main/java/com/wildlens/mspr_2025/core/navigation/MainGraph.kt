@@ -23,14 +23,7 @@ fun MainGraph(
         startDestination = startDestination
     ) {
         composable(AppRoute.Auth.route) { AuthScreen(navController = navController) }
-        composable(AppRoute.Home.route) { HomeScreen(
-            navController = navController,
-            onLogout = {
-                navController.navigate(AppRoute.Auth.route) {
-                    popUpTo(AppRoute.Home.route) { inclusive = true }
-                }
-            }
-        ) }
+        composable(AppRoute.Home.route) { HomeScreen(navController = navController) }
         composable(AppRoute.Settings.route) { SettingsScreen(navController = navController) }
         composable(AppRoute.Animals.route) { AnimalsScreen(navController = navController) }
         composable(AppRoute.MyScans.route) { MyScansScreen(navController = navController) }

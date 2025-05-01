@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.wildlens.mspr_2025.core.navigation.NavViewModel
+import com.wildlens.mspr_2025.core.events.UiEvent
 import com.wildlens.mspr_2025.ui.components.WildlensScaffold
 import com.wildlens.mspr_2025.ui.screens.auth.state.AuthUiState
 import com.wildlens.mspr_2025.ui.screens.auth.state.AuthViewModel
@@ -24,22 +24,31 @@ import com.wildlens.mspr_2025.ui.screens.auth.state.AuthViewModel
 @Composable
 fun AuthScreen(
     viewModel: AuthViewModel = hiltViewModel(),
-    navViewModel: NavViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
+
     val formState by viewModel.form.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
+
+    val viewModel: AuthViewModel = hiltViewModel()
+    val uiEvent = viewModel.uiEvent
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
-        navViewModel.uiEvents.collect { message ->
-            snackbarHostState.showSnackbar(message)
-        }
-    }
-
-    LaunchedEffect(uiState) {
-        if (uiState is AuthUiState.Success) {
-            navViewModel.onLoginSuccess()
+        uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.ShowSnackbar -> snackbarHostState.showSnackbar(event.message)
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.route) {
+                        if (event.inclusive) {
+                            popUpTo(navController.currentDestination?.route ?: "") {
+                                inclusive = true
+                            }
+                        }
+                    }
+                }
+                is UiEvent.PopBackStack -> navController.popBackStack()
+            }
         }
     }
 

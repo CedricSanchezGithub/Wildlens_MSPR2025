@@ -22,7 +22,7 @@ fun MyScansScreen(
 
     WildlensScaffold(
         snackbarHostState = snackbarHostState,
-        navController = navController
+        navController = navController,
     ) { padding ->
         Column(
             modifier = modifier

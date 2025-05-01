@@ -27,12 +27,13 @@ fun AnimalsScreen(
     viewModel: AnimalsViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
+
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     WildlensScaffold(
         snackbarHostState = snackbarHostState,
-        navController = navController
+        navController = navController,
     ) { padding ->
         Column(
             modifier = modifier

@@ -1,6 +1,6 @@
 package com.wildlens.mspr_2025.core.session.di
 
-import com.wildlens.mspr_2025.core.session.AuthManager
+import com.wildlens.mspr_2025.core.session.SessionManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,9 +9,9 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AuthModule {
+object SessionModule {
 
     @Provides
     @Singleton
-    fun provideAuthManager(): AuthManager = AuthManager()
+    fun provideAuthManager(): SessionManager = SessionManager()
 }

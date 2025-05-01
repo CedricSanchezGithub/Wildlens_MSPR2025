@@ -16,7 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.wildlens.mspr_2025.core.navigation.NavViewModel
+import com.wildlens.mspr_2025.core.events.UiEvent
+import com.wildlens.mspr_2025.core.session.SessionViewModel
 import com.wildlens.mspr_2025.ui.components.WildlensScaffold
 import com.wildlens.mspr_2025.ui.screens.home.state.HomeState
 import com.wildlens.mspr_2025.ui.screens.home.state.HomeViewModel
@@ -25,26 +26,31 @@ import com.wildlens.mspr_2025.ui.screens.home.state.HomeViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    navViewModel: NavViewModel = hiltViewModel(),
-    onLogout: () -> Unit,
     navController: NavHostController
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
+    val sessionViewModel: SessionViewModel = hiltViewModel()
+
     LaunchedEffect(Unit) {
-        navViewModel.uiEvents.collect { message ->
-            snackbarHostState.showSnackbar(message)
+        sessionViewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.ShowSnackbar -> snackbarHostState.showSnackbar(event.message)
+                is UiEvent.Navigate -> navController.navigate(event.route) {
+                    if (event.inclusive) {
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                    }
+                }
+                else -> {}
+            }
         }
     }
 
+
     WildlensScaffold(
         snackbarHostState = snackbarHostState,
-        onLogoutClick = {
-            navViewModel.logout()
-            onLogout()
-        },
-        navController = navController
+        navController = navController,
     ) { padding ->
         Column(
             modifier = modifier

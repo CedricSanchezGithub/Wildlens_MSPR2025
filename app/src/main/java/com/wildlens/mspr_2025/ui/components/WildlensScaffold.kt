@@ -13,19 +13,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.wildlens.mspr_2025.core.session.SessionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WildlensScaffold(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-    onClickTheme: () -> Unit = {},
-    onLogoutClick: () -> Unit = {},
-    isLoggedIn: Boolean = false,
     navController: NavController,
     content: @Composable (PaddingValues) -> Unit
 ) {
+
+    val sessionViewModel = hiltViewModel<SessionViewModel>()
+    val isLoggedIn: State<Boolean> = sessionViewModel.isLoggedIn.collectAsState()
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -41,10 +45,8 @@ fun WildlensScaffold(
         floatingActionButtonPosition = FabPosition.Center,
         topBar = {
             WildlensTopBar(
-                onClickTheme = onClickTheme,
-                isLoggedIn = isLoggedIn,
-                onLogoutClick = onLogoutClick,
-                navController = navController
+                navController = navController,
+                isLoggedIn = isLoggedIn.value
             )
         },
         bottomBar = {
