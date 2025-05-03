@@ -83,6 +83,10 @@ dependencies {
     ksp(libs.dagger.hilt.compiler.ksp)
     ksp(libs.androidx.hilt.compiler.ksp)
 
+    // Gestion des permissions
+    implementation(libs.accompanist.permissions)
+
+
     // WorkManager
     implementation(libs.androidx.work.runtime)
 
@@ -112,7 +116,10 @@ dependencies {
     // TFLite : Vision + Support
     implementation(libs.tflite.support)
     implementation(libs.tflite.task)
+    implementation(libs.tflite.gpu)
 
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.guava)
 
 }

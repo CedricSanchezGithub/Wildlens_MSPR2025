@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.wildlens.mspr_2025.core.navigation.AppRoute
 import com.wildlens.mspr_2025.core.session.SessionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,7 +36,7 @@ fun WildlensScaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* Action photo */ },
+                onClick = { navController.navigate(AppRoute.Camera.route) },
                 containerColor = MaterialTheme.colorScheme.primary,
                 shape = CircleShape
             ) {
