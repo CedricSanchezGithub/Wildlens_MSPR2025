@@ -56,70 +56,72 @@ android {
 
 dependencies {
 
-    // Plus d'icones & de fonts
-    implementation(libs.androidx.material.icons.extended)
-    implementation(libs.androidx.ui.text.google.fonts)
-
-    // Core AndroidX
+// Core
     implementation(libs.androidx.core.ktx)
+    implementation(libs.guava)
+
+// Lifecycle & ViewModel
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.activity.compose)
 
-    // Compose
+// Compose
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.compose.animation)
     implementation(libs.androidx.navigation.compose)
 
-    // Hilt DI
+// Hilt DI
     implementation(libs.dagger.hilt.android)
     implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.hilt.navigation.compose)
-
     ksp(libs.dagger.hilt.compiler.ksp)
     ksp(libs.androidx.hilt.compiler.ksp)
 
-    // Gestion des permissions
-    implementation(libs.accompanist.permissions)
-
-
-    // WorkManager
+// WorkManager
     implementation(libs.androidx.work.runtime)
 
-    // Tests
+// CameraX
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.extensions)
+
+// Permissions
+    implementation(libs.accompanist.permissions)
+
+// Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+
+// TFLite
+    implementation(libs.tflite.support)
+    implementation(libs.tflite.task)
+    implementation(libs.tflite.gpu)
+
+// Networking
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.serialization)
+    implementation(libs.serialization.json)
+    implementation(libs.okhttp.logging)
+
+// Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 
-    // Debug tools
+// Debug tools
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // CameraX
-    implementation (libs.androidx.camera.core)
-    implementation (libs.androidx.camera.camera2)
-    implementation (libs.androidx.camera.lifecycle)
-    implementation (libs.androidx.camera.view)
-    implementation (libs.androidx.camera.extensions)
-
-    // Firebase
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.firestore)
-
-    // TFLite : Vision + Support
-    implementation(libs.tflite.support)
-    implementation(libs.tflite.task)
-    implementation(libs.tflite.gpu)
-
-    implementation(libs.kotlinx.serialization.json)
-
-    implementation(libs.guava)
 
 }

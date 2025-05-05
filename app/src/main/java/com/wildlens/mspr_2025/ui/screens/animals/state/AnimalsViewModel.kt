@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wildlens.mspr_2025.data.repository.AnimalRepository
+import com.wildlens.mspr_2025.data.repository.MetaDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnimalsViewModel @Inject constructor(
-    private val repository: AnimalRepository
+    private val repository: MetaDataRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<AnimalsState>(AnimalsState.Loading)
@@ -25,7 +26,7 @@ class AnimalsViewModel @Inject constructor(
     private fun loadAnimals() {
         viewModelScope.launch {
             try {
-                val animals = repository.getAnimals()
+                val animals = repository.getMetaDatas()
                 _uiState.value = AnimalsState.Success(animals)
             } catch (e: Exception) {
                 Log.e("AnimalsVM", "Erreur parsing JSON", e)

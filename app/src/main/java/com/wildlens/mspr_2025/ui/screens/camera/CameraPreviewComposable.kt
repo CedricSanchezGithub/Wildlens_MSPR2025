@@ -2,6 +2,7 @@ package com.wildlens.mspr_2025.ui.screens.camera
 
 import android.util.Log
 import android.util.Size
+import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
@@ -49,7 +50,6 @@ fun CameraPreviewComposable(
                 )
 
                 val imageAnalysis = ImageAnalysis.Builder()
-                    .setTargetResolution(Size(1280, 720))
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build()
                     .apply {
