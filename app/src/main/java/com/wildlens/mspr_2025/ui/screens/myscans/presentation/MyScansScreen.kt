@@ -33,7 +33,9 @@ fun MyScansScreen(
         ) {
             when (val state = uiState) {
                 is MyScansState.Loading -> CircularProgressIndicator()
-                is MyScansState.Success -> MyScansScreenSuccess(uiModel = state)
+                is MyScansState.Success -> MyScansScreenSuccess(
+                    uiModel = state,
+                    onAnimalSelected = viewModel::onAnimalSelected)
                 is MyScansState.Error -> Text(
                     text = state.message,
                     color = MaterialTheme.colorScheme.error
