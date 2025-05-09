@@ -22,5 +22,5 @@ data class MetaDataModel(
     @SerialName("nom_latin")
     val nomLatin: String,
     @SerialName("population_estimee")
-    val populationEstimee: Long
+    val populationEstimee: Double
 )

@@ -1,6 +1,7 @@
 [versions]
 # Android & Kotlin
 agp = "8.9.1"
+coilCompose = "2.7.0"
 kotlin = "2.1.10"
 
 # Jetpack Core
@@ -77,6 +78,7 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "compose" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }

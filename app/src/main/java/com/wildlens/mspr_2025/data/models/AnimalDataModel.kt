@@ -1,5 +1,6 @@
 package com.wildlens.mspr_2025.data.models
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 //@Serializable
@@ -18,14 +19,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AnimalDataModel(
-    val description: String,
     val espece: String,
-    val images: List<ImageItem>,
+    val description: String,
     val localisation: String,
+    @SerialName("nom_fr")
     val nomFr: String,
+    @SerialName("nom_latin")
     val nomLatin: String,
+    @SerialName("nombre_image")
     val nombreImage: Int,
-    val populationEstimee: Double
+    @SerialName("population_estimee")
+    val populationEstimee: Double,
+    val images: List<ImageItem>,
 )
 
 @Serializable

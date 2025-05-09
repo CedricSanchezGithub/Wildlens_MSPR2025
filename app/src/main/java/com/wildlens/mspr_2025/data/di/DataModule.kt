@@ -4,6 +4,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.wildlens.mspr_2025.data.api.AnimalApiService
 import com.wildlens.mspr_2025.data.repository.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.wildlens.mspr_2025.data.api.AnimalTracksApiService
 import com.wildlens.mspr_2025.data.api.MetaDataApiService
 import dagger.Module
 import dagger.Provides
@@ -52,6 +53,12 @@ object RepositoryModule {
 
     @Provides
     @Singleton
+    fun provideAnimaltracksRepository(
+        impl: AnimalTracksRepositoryImpl
+    ): AnimalTracksRepository = impl
+
+    @Provides
+    @Singleton
     fun provideMetaDataRepository(
         impl: MetaDataRepositoryImpl
     ): MetaDataRepository = impl
@@ -62,9 +69,14 @@ object RepositoryModule {
         firestore: FirebaseFirestore
     ): UserRepository = UserRepositoryImpl(firestore)
 
+
     @Provides
     @Singleton
     fun provideMetaDataApiService(retrofit: Retrofit): MetaDataApiService =
         retrofit.create(MetaDataApiService::class.java)
 
+    @Provides
+    @Singleton
+    fun provideAnimalTracksApiService(retrofit: Retrofit): AnimalTracksApiService =
+        retrofit.create(AnimalTracksApiService::class.java)
 }

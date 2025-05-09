@@ -18,3 +18,7 @@ interface AnimalRepository {
 interface MetaDataRepository {
     suspend fun getMetaDatas(): MetasDataModel
 }
+
+interface AnimalTracksRepository {
+    suspend fun getAnimalTracks(): AnimalDataModel
+}
