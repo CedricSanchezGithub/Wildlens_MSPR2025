@@ -16,24 +16,21 @@
 
 package com.wildlens.mspr_2025.core.camerax.imageclassification
 
-import android.graphics.Bitmap
 import android.util.Log
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import java.util.concurrent.atomic.AtomicBoolean
-import androidx.core.graphics.createBitmap
 
 /**
- * Classe responsable d’analyser les images fournies par CameraX en temps réel
- * et de transmettre les frames au moteur de classification (TensorFlow Lite).
+ * Analyse en temps réel les images de la caméra via ImageAnalysis.
  *
- * Utilité :
- * - Convertit les `ImageProxy` en `Bitmap`
- * - Appelle `ImageClassifierHelper.classify()` avec les frames caméra
- * - Utilise un verrou (`isProcessing`) pour éviter de lancer plusieurs inférences simultanément
+ * - Convertit chaque ImageProxy en Bitmap.
+ * - Appelle la classification avec ImageClassifierHelper.
+ * - Utilise un verrou (AtomicBoolean) pour éviter les traitements concurrents.
  *
- * 📌 Cette classe est conçue pour être passée à `ImageAnalysis.setAnalyzer()` dans CameraX.
+ * S'utiliser avec CameraX via setAnalyzer().
  */
+
 class CameraImageAnalyzer(
     private val imageClassifierHelper: ImageClassifierHelper
 ) : ImageAnalysis.Analyzer {

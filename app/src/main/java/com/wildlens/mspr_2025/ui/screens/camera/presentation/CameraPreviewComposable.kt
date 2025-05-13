@@ -1,10 +1,10 @@
-package com.wildlens.mspr_2025.ui.screens.camera
+package com.wildlens.mspr_2025.ui.screens.camera.presentation
 
+import android.content.Context
 import android.util.Log
-import android.util.Size
-import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -15,14 +15,41 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.wildlens.mspr_2025.core.camerax.imageclassification.CameraImageAnalyzer
 import com.wildlens.mspr_2025.core.camerax.imageclassification.ImageClassifierHelper
+import com.wildlens.mspr_2025.core.camerax.imageclassification.ClassifierListener
+import com.wildlens.mspr_2025.ui.screens.camera.state.ScanViewModel
 import org.tensorflow.lite.task.vision.classifier.Classifications
+
+/**
+ * Composable affichant l’aperçu de la caméra via CameraX et PreviewView.
+ *
+ * Cette fonction configure les use cases de CameraX :
+ * - Preview : pour afficher le flux caméra
+ * - ImageCapture : pour prendre des photos (exposé via le callback onImageCaptureReady)
+ * - ImageAnalysis : pour effectuer une classification d’images en temps réel avec TensorFlow Lite
+ *
+ * @param lifecycleOwner L’observateur de cycle de vie utilisé pour lier les use cases
+ * @param modifier Modificateur d'affichage du composant
+ * @param context Contexte Android requis pour CameraX et TFLite
+ * @param modelIndex Index du modèle de classification sélectionné
+ * @param delegateIndex Index du délégué d’inférence (CPU/GPU/NNAPI)
+ * @param viewModel ViewModel utilisé pour suivre l’état de chargement
+ * @param onResults Callback appelé à chaque résultat de classification avec le temps d’inférence
+ * @param onImageCaptureReady Callback exposant l’instance d’ImageCapture pour la capture de photo
+ */
+
+
+lateinit var imageCapture: ImageCapture
 
 @Composable
 fun CameraPreviewComposable(
     lifecycleOwner: LifecycleOwner,
-    context: android.content.Context,
     modifier: Modifier = Modifier,
-    onResults: (List<Classifications>?, Long) -> Unit
+    context: Context,
+    modelIndex: Int,
+    delegateIndex: Int,
+    viewModel: ScanViewModel,
+    onResults: (List<Classifications>?, Long) -> Unit,
+    onImageCaptureReady: (ImageCapture) -> Unit
 ) {
     AndroidView(
         modifier = modifier,
@@ -36,15 +63,29 @@ fun CameraPreviewComposable(
                     surfaceProvider = previewView.surfaceProvider
                 }
 
+                imageCapture = ImageCapture.Builder().build()
+                onImageCaptureReady(imageCapture)
+
                 val imageClassifierHelper = ImageClassifierHelper(
                     context = ctx,
-                    imageClassifierListener = object : ImageClassifierHelper.ClassifierListener {
+                    currentModel = modelIndex,
+                    currentDelegate = delegateIndex,
+                    viewModel = viewModel,
+                    imageClassifierListener = object : ClassifierListener {
                         override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
                             onResults(results, inferenceTime)
                         }
 
                         override fun onError(error: String) {
-                            // log optionnel
+                            Log.e("CameraPreview", error)
+                        }
+
+                        override fun onLoading() {
+                            viewModel.setLoading(true)
+                        }
+
+                        override fun onInitialized() {
+                            viewModel.setLoading(false)
                         }
                     }
                 )
@@ -67,7 +108,8 @@ fun CameraPreviewComposable(
                         lifecycleOwner,
                         cameraSelector,
                         preview,
-                        imageAnalysis
+                        imageAnalysis,
+                        imageCapture
                     )
                 } catch (e: Exception) {
                     Log.e("CameraX", "Échec du bind des use cases", e)

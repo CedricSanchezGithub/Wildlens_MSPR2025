@@ -1,6 +1,5 @@
 package com.wildlens.mspr_2025.ui.screens.animals.state
 
-import com.wildlens.mspr_2025.data.models.MetaDataModel
 import com.wildlens.mspr_2025.data.models.MetasDataModel
 
 sealed class AnimalsState {

@@ -3,33 +3,26 @@ package com.wildlens.mspr_2025.core.camerax.imageclassification
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.SystemClock
-import android.util.Log
 import android.view.Surface
-import org.tensorflow.lite.gpu.CompatibilityList
+import com.wildlens.mspr_2025.ui.screens.camera.state.ScanViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
-import org.tensorflow.lite.task.core.BaseOptions
 import org.tensorflow.lite.task.core.vision.ImageProcessingOptions
-import org.tensorflow.lite.task.vision.classifier.Classifications
 import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 
 /**
- * Classe utilitaire pour charger, configurer et exécuter un modèle TensorFlow Lite de classification d’images.
+ * Classe utilitaire pour la gestion du modèle TensorFlow Lite de classification d’images.
  *
- * Objectifs :
- * - Permet de configurer dynamiquement le modèle à utiliser (MobileNet, EfficientNet, etc.)
- * - Gère le choix du délégué d’exécution (CPU, GPU, NNAPI)
- * - Expose une API simple (`classify()`) pour lancer une inférence à partir d’un `Bitmap`
- * - Fournit les résultats via une interface callback `ClassifierListener`
+ * - Gère l’initialisation du modèle en fonction de l’index sélectionné.
+ * - Supporte plusieurs types de délégués (CPU, GPU, NNAPI).
+ * - Télécharge un modèle distant si nécessaire (ici EfficientNetV4).
+ * - Fournit un point d’entrée unique pour lancer des inférences sur des images via classify().
  *
- * Utilisation :
- * - Instancier avec le `Context` de l’application et un listener pour les résultats
- * - Appeler `classify(bitmap, rotation)` avec une image issue de la caméra ou d’un fichier
- * - Écouter les résultats via `onResults()` ou les erreurs via `onError()`
- *
- * 💡 Conçu pour être utilisé en temps réel avec CameraX via `ImageAnalysis.Analyzer`.
+ * À utiliser avec CameraX et ImageAnalysis.Analyzer pour de la classification en temps réel.
  */
-
 
 class ImageClassifierHelper(
     var threshold: Float = 0.5f,
@@ -38,80 +31,79 @@ class ImageClassifierHelper(
     var currentDelegate: Int = 0,
     var currentModel: Int = 0,
     val context: Context,
+    val viewModel: ScanViewModel,
     val imageClassifierListener: ClassifierListener?
 ) {
     private var imageClassifier: ImageClassifier? = null
+    private var isInitializing = false
 
     init {
-        setupImageClassifier()
+        CoroutineScope(Dispatchers.Main).launch {
+            setupImageClassifier()
+        }
     }
 
     fun clearImageClassifier() {
         imageClassifier = null
     }
 
-    private fun setupImageClassifier() {
-        val optionsBuilder = ImageClassifier.ImageClassifierOptions.builder()
-            .setScoreThreshold(threshold)
-            .setMaxResults(maxResults)
+    suspend fun setupImageClassifier() {
+        if (isInitializing) return
+        isInitializing = true
+        viewModel.setLoading(true)
+        imageClassifierListener?.onLoading()
 
-        val baseOptionsBuilder = BaseOptions.builder().setNumThreads(numThreads)
-
-        when (currentDelegate) {
-            DELEGATE_CPU -> {
-                // Default
-            }
-            DELEGATE_GPU -> {
-                if (CompatibilityList().isDelegateSupportedOnThisDevice) {
-                    baseOptionsBuilder.useGpu()
-                } else {
-                    imageClassifierListener?.onError("GPU is not supported on this device")
-                }
-            }
-            DELEGATE_NNAPI -> {
-                baseOptionsBuilder.useNnapi()
-            }
-        }
-
-        optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
-
-        val modelName =
-            when (currentModel) {
-                MODEL_MOBILENETV1 -> "mobilenetv1.tflite"
-                MODEL_EFFICIENTNETV0 -> "efficientnet-lite0.tflite"
-                MODEL_EFFICIENTNETV1 -> "efficientnet-lite1.tflite"
-                MODEL_EFFICIENTNETV2 -> "efficientnet-lite2.tflite"
-                else -> "mobilenetv1.tflite"
-            }
+        val options = buildImageClassifierOptions(
+            threshold,
+            maxResults,
+            numThreads,
+            currentDelegate,
+            imageClassifierListener?.let { listener -> { error -> listener.onError(error) } } ?: {}
+        )
+        val modelFile = getModelFileIfNeeded(context, currentModel)
 
         try {
-            imageClassifier =
-                ImageClassifier.createFromFileAndOptions(context, modelName, optionsBuilder.build())
+            imageClassifier = when {
+                modelFile?.exists() == true -> {
+                    ImageClassifier.createFromFileAndOptions(modelFile, options)
+                }
+
+                currentModel == MODEL_EFFICIENTNETV4 -> {
+                    imageClassifierListener?.onError("Le modèle EfficientNetV4 n’a pas été trouvé ni téléchargé.")
+                    return
+                }
+
+                else -> {
+                    val modelName = when (currentModel) {
+                        MODEL_MOBILENETV1 -> "mobilenetv1.tflite"
+                        MODEL_EFFICIENTNETV0 -> "efficientnet-lite0.tflite"
+                        MODEL_EFFICIENTNETV1 -> "efficientnet-lite1.tflite"
+                        MODEL_EFFICIENTNETV2 -> "efficientnet-lite2.tflite"
+                        else -> "mobilenetv1.tflite"
+                    }
+                    ImageClassifier.createFromFileAndOptions(context, modelName, options)
+                }
+            }
+            imageClassifierListener?.onInitialized()
         } catch (e: IllegalStateException) {
-            imageClassifierListener?.onError(
-                "Image classifier failed to initialize. See error logs for details"
-            )
-            Log.e(TAG, "TFLite failed to load model with error: " + e.message)
+            imageClassifierListener?.onError("Image classifier failed: ${e.message}")
+        } finally {
+            isInitializing = false
+            viewModel.setLoading(false)
         }
     }
 
     fun classify(image: Bitmap, rotation: Int) {
         if (imageClassifier == null) {
-            setupImageClassifier()
+            CoroutineScope(Dispatchers.Main).launch {
+                setupImageClassifier()
+            }
+            return
         }
 
-        // Inference time is the difference between the system time at the start and finish of the
-        // process
         var inferenceTime = SystemClock.uptimeMillis()
 
-        // Create preprocessor for the image.
-        // See https://www.tensorflow.org/lite/inference_with_metadata/
-        //            lite_support#imageprocessor_architecture
-        val imageProcessor =
-            ImageProcessor.Builder()
-                .build()
-
-        // Preprocess the image and convert it into a TensorImage for classification.
+        val imageProcessor = ImageProcessor.Builder().build()
         val tensorImage = imageProcessor.process(TensorImage.fromBitmap(image))
 
         val imageProcessingOptions = ImageProcessingOptions.builder()
@@ -120,44 +112,27 @@ class ImageClassifierHelper(
 
         val results = imageClassifier?.classify(tensorImage, imageProcessingOptions)
         inferenceTime = SystemClock.uptimeMillis() - inferenceTime
-        imageClassifierListener?.onResults(
-            results,
-            inferenceTime
-        )
+        imageClassifierListener?.onResults(results, inferenceTime)
     }
 
-    // Receive the device rotation (Surface.x values range from 0->3) and return EXIF orientation
-    // http://jpegclub.org/exif_orientation.html
-    private fun getOrientationFromRotation(rotation: Int) : ImageProcessingOptions.Orientation {
-        when (rotation) {
-            Surface.ROTATION_270 ->
-                return ImageProcessingOptions.Orientation.BOTTOM_RIGHT
-            Surface.ROTATION_180 ->
-                return ImageProcessingOptions.Orientation.RIGHT_BOTTOM
-            Surface.ROTATION_90 ->
-                return ImageProcessingOptions.Orientation.TOP_LEFT
-            else ->
-                return ImageProcessingOptions.Orientation.RIGHT_TOP
+    private fun getOrientationFromRotation(rotation: Int): ImageProcessingOptions.Orientation {
+        return when (rotation) {
+            Surface.ROTATION_270 -> ImageProcessingOptions.Orientation.BOTTOM_RIGHT
+            Surface.ROTATION_180 -> ImageProcessingOptions.Orientation.RIGHT_BOTTOM
+            Surface.ROTATION_90 -> ImageProcessingOptions.Orientation.TOP_LEFT
+            else -> ImageProcessingOptions.Orientation.RIGHT_TOP
         }
-    }
-
-    interface ClassifierListener {
-        fun onError(error: String)
-        fun onResults(
-            results: List<Classifications>?,
-            inferenceTime: Long
-        )
     }
 
     companion object {
         const val DELEGATE_CPU = 0
         const val DELEGATE_GPU = 1
         const val DELEGATE_NNAPI = 2
+
         const val MODEL_MOBILENETV1 = 0
         const val MODEL_EFFICIENTNETV0 = 1
         const val MODEL_EFFICIENTNETV1 = 2
         const val MODEL_EFFICIENTNETV2 = 3
-
-        private const val TAG = "ImageClassifierHelper"
+        const val MODEL_EFFICIENTNETV4 = 4
     }
 }

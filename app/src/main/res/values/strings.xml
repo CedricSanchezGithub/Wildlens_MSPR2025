@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Wildlens</string>
+    <string name="welcome_message">Bienvenue sur Wildlens!</string>
 </resources>

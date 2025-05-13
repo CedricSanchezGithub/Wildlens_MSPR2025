@@ -3,7 +3,6 @@ package com.wildlens.mspr_2025.ui.screens.animals.state
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wildlens.mspr_2025.data.repository.AnimalRepository
 import com.wildlens.mspr_2025.data.repository.MetaDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +24,7 @@ class AnimalsViewModel @Inject constructor(
 
     private fun loadAnimals() {
         viewModelScope.launch {
+                _uiState.value = AnimalsState.Loading
             try {
                 val animals = repository.getMetaDatas()
                 _uiState.value = AnimalsState.Success(animals)
