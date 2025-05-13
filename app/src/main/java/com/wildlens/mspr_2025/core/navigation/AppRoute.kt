@@ -13,4 +13,5 @@ sealed class AppRoute(val route: String) {
     object Animals : AppRoute("animals")
     object MyScans : AppRoute("my_scans")
     object IA : AppRoute("ia")
+    object Camera : AppRoute("camera")
 }

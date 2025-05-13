@@ -13,22 +13,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wildlens.mspr_2025.data.models.AnimalDataModel
+import com.wildlens.mspr_2025.data.models.MetaDataModel
 
 @Composable
-fun AnimalCard(animalDataModel: AnimalDataModel) {
+fun AnimalCard(animalDataModel: MetaDataModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = animalDataModel.frenchName, style = MaterialTheme.typography.titleLarge)
-            Text(text = animalDataModel.latinName, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+            Text(text = animalDataModel.nomFr, style = MaterialTheme.typography.titleLarge)
+            Text(text = animalDataModel.nomLatin, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.height(8.dp))
             Text(text = animalDataModel.description, style = MaterialTheme.typography.bodyMedium)
             Spacer(Modifier.height(4.dp))
-            Text(text = "Localisation : ${animalDataModel.location}", style = MaterialTheme.typography.labelSmall)
-            Text(text = "Population estimée : ${animalDataModel.estimatedPopulation}", style = MaterialTheme.typography.labelSmall)
+            Text(text = "Localisation : ${animalDataModel.localisation}", style = MaterialTheme.typography.labelSmall)
+            Text(text = "Population estimée : ${animalDataModel.populationEstimee}", style = MaterialTheme.typography.labelSmall)
         }
     }
 }

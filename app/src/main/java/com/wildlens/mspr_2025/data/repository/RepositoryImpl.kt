@@ -1,15 +1,16 @@
 package com.wildlens.mspr_2025.data.repository
 
-import android.content.Context
+import com.wildlens.mspr_2025.data.api.AnimalApiService
+import com.wildlens.mspr_2025.data.api.AnimalTracksApiService
+import com.wildlens.mspr_2025.data.api.MetaDataApiService
 import com.wildlens.mspr_2025.data.models.AnimalDataModel
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.wildlens.mspr_2025.data.models.MetasDataModel
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor() : Repository {
     override fun getMessage(): Flow<String> = flow {
@@ -19,11 +20,25 @@ class RepositoryImpl @Inject constructor() : Repository {
 }
 
 class AnimalRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    private val api: AnimalApiService
 ) : AnimalRepository {
+    override suspend fun getAnimals(): AnimalDataModel = withContext(Dispatchers.IO) {
+        api.getAnimals("beaver")
+    }
+}
 
-    override suspend fun getAnimals(): List<AnimalDataModel> = withContext(Dispatchers.IO) {
-        val json = context.assets.open("getmetadata.json").bufferedReader().use { it.readText() }
-        Json.decodeFromString(json)
+class MetaDataRepositoryImpl @Inject constructor(
+    private val api: MetaDataApiService
+) : MetaDataRepository {
+    override suspend fun getMetaDatas(): MetasDataModel = withContext(Dispatchers.IO) {
+        api.getMetaData()
+    }
+}
+
+class AnimalTracksRepositoryImpl @Inject constructor(
+    private val api: AnimalTracksApiService
+) : AnimalTracksRepository {
+    override suspend fun getAnimalTracks(animal: String): AnimalDataModel = withContext(Dispatchers.IO) {
+        api.getAnimalTracks(animal)
     }
 }

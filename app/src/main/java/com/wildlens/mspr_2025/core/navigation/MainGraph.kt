@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.wildlens.mspr_2025.ui.screens.animals.presentation.AnimalsScreen
 import com.wildlens.mspr_2025.ui.screens.auth.presentation.AuthScreen
+import com.wildlens.mspr_2025.ui.screens.camera.presentation.CameraScreen
 import com.wildlens.mspr_2025.ui.screens.home.presentation.HomeScreen
 import com.wildlens.mspr_2025.ui.screens.iascreen.presentation.IAScreen
 import com.wildlens.mspr_2025.ui.screens.myscans.presentation.MyScansScreen
@@ -29,6 +30,7 @@ fun MainGraph(
         composable(AppRoute.MyScans.route) { MyScansScreen(navController = navController) }
         composable(AppRoute.IA.route) { IAScreen(navController = navController) }
         composable(AppRoute.Profile.route) { ProfileScreen(navController = navController) }
+        composable(AppRoute.Camera.route) { CameraScreen() }
     }
 }
 
