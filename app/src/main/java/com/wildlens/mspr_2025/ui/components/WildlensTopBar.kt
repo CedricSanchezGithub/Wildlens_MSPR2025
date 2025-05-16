@@ -1,6 +1,7 @@
 package com.wildlens.mspr_2025.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -10,27 +11,18 @@ import androidx.compose.material.icons.filled.Brightness6
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.wildlens.mspr_2025.R
+import com.wildlens.mspr_2025.core.langage.AppLanguage
+import com.wildlens.mspr_2025.core.langage.setAppLanguage
 import com.wildlens.mspr_2025.core.navigation.AppRoute
 import com.wildlens.mspr_2025.core.session.SessionViewModel
 import com.wildlens.mspr_2025.core.theme.LocalToggleTheme
@@ -45,6 +37,7 @@ fun WildlensTopBar(
     var expanded by remember { mutableStateOf(false) }
     val toggleTheme = LocalToggleTheme.current
     val sessionViewModel = hiltViewModel<SessionViewModel>()
+    var showLanguageDialog by remember { mutableStateOf(false) }
 
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -92,7 +85,7 @@ fun WildlensTopBar(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Settings,
-                            contentDescription = "Paramètres"
+                            contentDescription = "Accessibilité"
                         )
                     },
                     text = { Text("Paramètres") },
@@ -108,6 +101,18 @@ fun WildlensTopBar(
                     text = { Text("Thème") },
                     onClick = { toggleTheme() }
                 )
+
+                DropdownMenuItem(
+                    leadingIcon = {
+                        Icon(Icons.Default.Settings, contentDescription = stringResource(R.string.language))
+                    },
+                    text = { Text(stringResource(R.string.language)) },
+                    onClick = {
+                        expanded = false
+                        showLanguageDialog = true
+                    }
+                )
+
 
                 DropdownMenuItem(
                     leadingIcon = {
@@ -131,5 +136,30 @@ fun WildlensTopBar(
             }
         }
     )
+    if (showLanguageDialog) {
+        AlertDialog(
+            onDismissRequest = { showLanguageDialog = false },
+            confirmButton = {
+                TextButton(onClick = { showLanguageDialog = false }) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            }
+            ,
+            title = { Text(stringResource(R.string.language)) },
+            text = {
+                Column {
+                    AppLanguage.entries.forEach { language ->
+                        DropdownMenuItem(
+                            text = { Text(stringResource(id = language.labelRes)) },
+                            onClick = {
+                                setAppLanguage(navController.context, language)
+                                showLanguageDialog = false
+                            }
+                        )
+                    }
+                }
+            }
+        )
+    }
 }
 

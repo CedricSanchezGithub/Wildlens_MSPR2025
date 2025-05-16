@@ -25,9 +25,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.wildlens.mspr_2025.R
 import com.wildlens.mspr_2025.ui.screens.myscans.state.MyScansState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,7 +73,7 @@ fun MyScansScreenSuccess(
                 readOnly = true,
                 value = selectedAnimal,
                 onValueChange = {},
-                label = { Text("Choisir un animal") },
+                label = { Text(stringResource(R.string.choose_animal)) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier.menuAnchor().fillMaxWidth()
             )
@@ -103,14 +105,14 @@ fun MyScansScreenSuccess(
 
             item {
                 Text(
-                    text = "Scan de l'animal ${uiModel.imagesTracks.nomFr}",
+                    text = stringResource(R.string.scan_title, uiModel.imagesTracks.nomFr),
                     style = MaterialTheme.typography.headlineLarge,
                     modifier = Modifier.padding(8.dp)
                 )
             }
             item {
                 Text(
-                    text = "Nombre de scans : ${uiModel.imagesTracks.images.size}",
+                    text = stringResource(R.string.scan_count, uiModel.imagesTracks.images.size),
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(8.dp)
                 )
@@ -126,7 +128,7 @@ fun MyScansScreenSuccess(
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data("http://192.168.1.26:5000/${scan.url}")
+                            .data("http://90.51.140.217:5000/${scan.url}")
                             .crossfade(true)
                             .build(),
                         contentDescription = null,

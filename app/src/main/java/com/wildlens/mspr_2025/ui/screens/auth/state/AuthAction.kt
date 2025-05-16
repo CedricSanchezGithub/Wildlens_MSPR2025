@@ -7,5 +7,5 @@ sealed interface AuthAction {
     data class SwitchMode(val mode: AuthMode) : AuthAction
     data class FirstNameChanged(val firstName: String) : AuthAction
     data class LastNameChanged(val lastName: String) : AuthAction
-    object TogglePasswordVisibility : AuthAction
+    data object TogglePasswordVisibility : AuthAction
 }

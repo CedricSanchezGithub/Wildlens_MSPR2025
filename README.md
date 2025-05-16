@@ -1,7 +1,8 @@
 📱 Wildlens – Application Android
 🚀 Présentation
 
-Wildlens est une application Android développée avec Jetpack Compose. Elle s’appuie sur une architecture moderne et modulaire, conçue pour la maintenabilité, la scalabilité et une excellente expérience développeur.
+Wildlens est une application Android développée avec Jetpack Compose. 
+Elle s’appuie sur une architecture moderne et modulaire, conçue pour la maintenabilité, la scalabilité et une excellente expérience développeur.
 🛠️ Technologies utilisées
 
     Kotlin

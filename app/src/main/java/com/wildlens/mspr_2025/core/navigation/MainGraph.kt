@@ -12,7 +12,7 @@ import com.wildlens.mspr_2025.ui.screens.home.presentation.HomeScreen
 import com.wildlens.mspr_2025.ui.screens.iascreen.presentation.IAScreen
 import com.wildlens.mspr_2025.ui.screens.myscans.presentation.MyScansScreen
 import com.wildlens.mspr_2025.ui.screens.profile.presentation.ProfileScreen
-import com.wildlens.mspr_2025.ui.screens.settings.presentation.SettingsScreen
+import com.wildlens.mspr_2025.ui.screens.settings.presentation.AccessibilityScreen
 
 @Composable
 fun MainGraph(
@@ -25,7 +25,7 @@ fun MainGraph(
     ) {
         composable(AppRoute.Auth.route) { AuthScreen(navController = navController) }
         composable(AppRoute.Home.route) { HomeScreen(navController = navController) }
-        composable(AppRoute.Settings.route) { SettingsScreen(navController = navController) }
+        composable(AppRoute.Settings.route) { AccessibilityScreen(navController = navController) }
         composable(AppRoute.Animals.route) { AnimalsScreen(navController = navController) }
         composable(AppRoute.MyScans.route) { MyScansScreen(navController = navController) }
         composable(AppRoute.IA.route) { IAScreen(navController = navController) }

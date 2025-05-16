@@ -1,6 +1,6 @@
 [versions]
 # Android & Kotlin
-agp = "8.9.1"
+agp = "8.6.0"
 coilCompose = "2.7.0"
 kotlin = "2.1.10"
 
@@ -58,9 +58,10 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 
+appcompat = "1.7.0"
 
 [libraries]
-
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 # ────────── Android & Jetpack Core ──────────
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
@@ -136,4 +137,3 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-

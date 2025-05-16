@@ -256,6 +256,10 @@ fun MSPR_2025Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
+    // High contrast mode for accessibility
+    highContrastMode: Boolean = false,
+    // Medium contrast mode for accessibility
+    mediumContrastMode: Boolean = false,
     content: @Composable() () -> Unit
 ) {
   val colorScheme = when {
@@ -263,7 +267,13 @@ fun MSPR_2025Theme(
           val context = LocalContext.current
           if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
       }
-      
+
+      highContrastMode && darkTheme -> highContrastDarkColorScheme
+      highContrastMode -> highContrastLightColorScheme
+
+      mediumContrastMode && darkTheme -> mediumContrastDarkColorScheme
+      mediumContrastMode -> mediumContrastLightColorScheme
+
       darkTheme -> darkScheme
       else -> lightScheme
   }
@@ -274,4 +284,3 @@ fun MSPR_2025Theme(
     content = content
   )
 }
-

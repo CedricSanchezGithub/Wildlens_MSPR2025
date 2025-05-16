@@ -21,7 +21,7 @@ import javax.inject.Singleton
 object RepositoryModule {
 
     @Provides
-    fun provideBaseUrl(): String = "http://192.168.1.26:5000/"
+    fun provideBaseUrl(): String = "http://90.51.140.217:5000/"
 
     @OptIn(ExperimentalSerializationApi::class)
     @Provides

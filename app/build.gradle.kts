@@ -23,10 +23,9 @@ android {
     defaultConfig {
         applicationId = "com.wildlens.mspr_2025"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -52,6 +51,10 @@ android {
     buildFeatures {
         compose = true
     }
+
+//    androidResources {
+//        localeFilters.addAll(listOf("fr", "en"))
+//    }
 }
 
 dependencies {
@@ -124,5 +127,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.coil.compose)
-
+    implementation(libs.androidx.appcompat)
 }

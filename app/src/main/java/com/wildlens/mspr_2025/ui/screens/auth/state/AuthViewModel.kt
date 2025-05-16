@@ -9,11 +9,8 @@ import com.wildlens.mspr_2025.core.events.UiEvent
 import com.wildlens.mspr_2025.data.models.UserDataModel
 import com.wildlens.mspr_2025.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,9 +29,6 @@ class AuthViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState.Idle)
     val uiState: StateFlow<AuthUiState> = _uiState.asStateFlow()
-
-    private val _events = MutableSharedFlow<AuthUiEvent>()
-    val events: SharedFlow<AuthUiEvent> = _events.asSharedFlow()
 
     fun onAction(action: AuthAction) {
         when (action) {

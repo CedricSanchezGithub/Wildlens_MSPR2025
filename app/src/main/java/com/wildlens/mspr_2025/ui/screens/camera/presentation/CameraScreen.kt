@@ -26,12 +26,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.wildlens.mspr_2025.R
 import com.wildlens.mspr_2025.ui.screens.camera.presentation.components.BottomControlsPanel
 import com.wildlens.mspr_2025.ui.screens.camera.presentation.components.CameraLoadingOverlay
 import com.wildlens.mspr_2025.ui.screens.camera.presentation.components.CapturedThumbnail
@@ -102,8 +104,7 @@ fun CameraScreen(
                     ) {
                         inferenceTime?.let {
                             Text(
-                                "Inference time: $it ms",
-                                style = MaterialTheme.typography.bodyMedium,
+                                stringResource(R.string.inference_time, it),                                style = MaterialTheme.typography.bodyMedium,
                                 modifier = Modifier.padding(bottom = 4.dp)
                             )
                         }
@@ -111,7 +112,11 @@ fun CameraScreen(
                         LazyColumn(modifier = Modifier.heightIn(max = 150.dp)) {
                             items(categories, key = { it.label }) { category ->
                                 Text(
-                                    text = "${category.label}: ${(category.score * 100).toInt()}%",
+                                    text = stringResource(
+                                        R.string.label_with_score,
+                                        category.label,
+                                        (category.score * 100).toInt()
+                                    ),
                                     style = MaterialTheme.typography.bodyLarge,
                                     modifier = Modifier.padding(vertical = 2.dp)
                                 )

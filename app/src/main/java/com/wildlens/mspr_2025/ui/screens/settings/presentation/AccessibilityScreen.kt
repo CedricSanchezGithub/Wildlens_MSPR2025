@@ -19,7 +19,7 @@ import com.wildlens.mspr_2025.ui.screens.settings.state.SettingsState
 import com.wildlens.mspr_2025.ui.screens.settings.state.SettingsViewModel
 
 @Composable
-fun SettingsScreen(
+fun AccessibilityScreen(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel(),
     navController: NavHostController
@@ -38,7 +38,10 @@ fun SettingsScreen(
         ) {
             when (val state = uiState) {
                 is SettingsState.Loading -> CircularProgressIndicator()
-                is SettingsState.Success -> SettingsScreenSuccess(uiModel = state)
+                is SettingsState.Success -> AccessibilityScreenSuccess(
+                    viewModel = viewModel,
+                    settings = state.settings
+                )
                 is SettingsState.Error -> Text(
                     text = state.message,
                     color = MaterialTheme.colorScheme.error

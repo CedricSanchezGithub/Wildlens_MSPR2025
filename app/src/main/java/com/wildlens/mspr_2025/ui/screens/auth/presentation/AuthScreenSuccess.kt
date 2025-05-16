@@ -7,17 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.wildlens.mspr_2025.R
 import com.wildlens.mspr_2025.ui.screens.auth.state.AuthAction
 import com.wildlens.mspr_2025.ui.screens.auth.state.AuthFormState
 import com.wildlens.mspr_2025.ui.screens.auth.state.AuthMode
@@ -32,7 +29,7 @@ fun AuthScreenSuccess(
         OutlinedTextField(
             value = form.firstName,
             onValueChange = { onAction(AuthAction.FirstNameChanged(it)) },
-            label = { Text("Prénom") },
+            label = { Text(stringResource(R.string.first_name)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
@@ -42,7 +39,7 @@ fun AuthScreenSuccess(
         OutlinedTextField(
             value = form.lastName,
             onValueChange = { onAction(AuthAction.LastNameChanged(it)) },
-            label = { Text("Nom") },
+            label = { Text(stringResource(R.string.last_name)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
@@ -54,7 +51,7 @@ fun AuthScreenSuccess(
     OutlinedTextField(
         value = form.email,
         onValueChange = { onAction(AuthAction.EmailChanged(it)) },
-        label = { Text("Email") },
+        label = { Text(stringResource(R.string.email)) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp)
@@ -65,15 +62,17 @@ fun AuthScreenSuccess(
     OutlinedTextField(
         value = form.password,
         onValueChange = { onAction(AuthAction.PasswordChanged(it)) },
-        label = { Text("Mot de passe") },
+        label = { Text(stringResource(R.string.password)) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp),
         visualTransformation = if (form.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             val icon = if (form.isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
-            val description = if (form.isPasswordVisible) "Cacher le mot de passe" else "Afficher le mot de passe"
-
+            val description = if (form.isPasswordVisible)
+                stringResource(R.string.hide_password)
+            else
+                stringResource(R.string.show_password)
             IconButton(onClick = { onAction(AuthAction.TogglePasswordVisibility) }) {
                 Icon(imageVector = icon, contentDescription = description)
             }
@@ -89,7 +88,11 @@ fun AuthScreenSuccess(
             .fillMaxWidth()
             .padding(horizontal = 32.dp)
     ) {
-        Text(if (form.mode == AuthMode.LOGIN) "Se connecter" else "Créer un compte")
+        Text(if (form.mode == AuthMode.LOGIN)
+            stringResource(R.string.prompt_register)
+        else
+            stringResource(R.string.prompt_login)
+        )
     }
 
     TextButton(
@@ -98,11 +101,10 @@ fun AuthScreenSuccess(
             onAction(AuthAction.SwitchMode(newMode))
         }
     ) {
-        Text(
-            if (form.mode == AuthMode.LOGIN)
-                "Pas encore de compte ? S'inscrire"
-            else
-                "Déjà inscrit ? Se connecter"
-        )
+        Text(if (form.mode == AuthMode.LOGIN)
+            stringResource(R.string.prompt_register)
+        else
+            stringResource(R.string.prompt_login))
+
     }
 }

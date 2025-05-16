@@ -11,29 +11,31 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
+import com.wildlens.mspr_2025.R
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreenError(
     permissionsState : MultiplePermissionsState
 ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Veuillez accorder l'autorisation de la caméra")
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = {
-                permissionsState.launchMultiplePermissionRequest()
-            }) {
-                Text("Demander la permission")
-            }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(stringResource(R.string.camera_permission_required))
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = {
+            permissionsState.launchMultiplePermissionRequest()
+        }) {
+            Text(stringResource(R.string.request_permission))
         }
+    }
 
 }
