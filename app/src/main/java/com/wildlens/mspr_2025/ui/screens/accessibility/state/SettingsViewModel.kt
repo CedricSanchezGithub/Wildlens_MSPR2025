@@ -1,7 +1,8 @@
-package com.wildlens.mspr_2025.ui.screens.settings.state
+package com.wildlens.mspr_2025.ui.screens.accessibility.state
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.wildlens.mspr_2025.core.langage.AppLanguage
 import com.wildlens.mspr_2025.data.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,5 +50,8 @@ class SettingsViewModel @Inject constructor(
         _uiState.value = SettingsState.Success(_settingsUiState.value)
     }
 
-
+    fun changeLanguage(language: AppLanguage) {
+        _settingsUiState.value = _settingsUiState.value.copy(language = language)
+        _uiState.value = SettingsState.Success(_settingsUiState.value)
+    }
 }

@@ -38,7 +38,7 @@ fun IAScreen(
         ) {
             when (val state = uiState) {
                 is IAState.Loading -> CircularProgressIndicator()
-                is IAState.Success -> IAScreenSuccess(uiModel = state)
+                is IAState.Success -> IAScreenSuccess(uiModel = state, viewModel = viewModel)
                 is IAState.Error -> Text(
                     text = state.message,
                     color = MaterialTheme.colorScheme.error

@@ -1,8 +1,6 @@
 package com.wildlens.mspr_2025.data.repository
 
-import com.wildlens.mspr_2025.data.api.AnimalApiService
-import com.wildlens.mspr_2025.data.api.AnimalTracksApiService
-import com.wildlens.mspr_2025.data.api.MetaDataApiService
+import com.wildlens.mspr_2025.data.api.*
 import com.wildlens.mspr_2025.data.models.AnimalDataModel
 import com.wildlens.mspr_2025.data.models.MetasDataModel
 import kotlinx.coroutines.Dispatchers
@@ -40,5 +38,22 @@ class AnimalTracksRepositoryImpl @Inject constructor(
 ) : AnimalTracksRepository {
     override suspend fun getAnimalTracks(animal: String): AnimalDataModel = withContext(Dispatchers.IO) {
         api.getAnimalTracks(animal)
+    }
+}
+class WildlensETLRepositoryImpl @Inject constructor(
+    private val api: WildlensETLApiService
+) : WildlensETLRepository {
+    override suspend fun triggerETL() = withContext(Dispatchers.IO) {
+        api.triggerETL()
+        Unit
+    }
+}
+
+class TriggerMetaDataRepositoryImpl @Inject constructor(
+    private val api: WildlensMetadataApiService
+) : TriggerMetaDataRepository {
+    override suspend fun triggermetadatarepository() = withContext(Dispatchers.IO) {
+        api.triggerMetadata()
+        Unit
     }
 }

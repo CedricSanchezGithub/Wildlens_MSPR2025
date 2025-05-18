@@ -1,5 +1,6 @@
 package com.wildlens.mspr_2025.ui.components
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,12 +19,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.wildlens.mspr_2025.R
 import com.wildlens.mspr_2025.core.navigation.AppRoute
 
 
 @Composable
 fun WildlensBottomBar(navController : NavController) {
+
     BottomAppBar(
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -35,22 +39,22 @@ fun WildlensBottomBar(navController : NavController) {
         ) {
             BottomBarItem(
                 icon = Icons.Default.Home,
-                label = "Accueil",
+                label = stringResource(id = R.string.home),
                 onClick = { navController.navigate(AppRoute.Home.route) }
             )
             BottomBarItem(
                 icon = Icons.Default.Pets,
-                label = "Animaux",
+                label = stringResource(R.string.animals),
                 onClick = { navController.navigate(AppRoute.Animals.route) }
             )
             BottomBarItem(
                 icon = Icons.Default.Screenshot,
-                label = "Mes scans",
+                label = stringResource(R.string.my_scans),
                 onClick = { navController.navigate(AppRoute.MyScans.route) }
             )
             BottomBarItem(
                 icon = Icons.Default.AddChart,
-                label = "I.A",
+                label = stringResource(R.string.ia),
                 onClick = { navController.navigate(AppRoute.IA.route) }
             )
         }

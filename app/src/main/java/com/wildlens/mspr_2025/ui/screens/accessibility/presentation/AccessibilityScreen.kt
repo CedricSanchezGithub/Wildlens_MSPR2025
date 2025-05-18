@@ -1,4 +1,4 @@
-package com.wildlens.mspr_2025.ui.screens.settings.presentation
+package com.wildlens.mspr_2025.ui.screens.accessibility.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.wildlens.mspr_2025.ui.components.WildlensScaffold
-import com.wildlens.mspr_2025.ui.screens.settings.state.SettingsState
-import com.wildlens.mspr_2025.ui.screens.settings.state.SettingsViewModel
+import com.wildlens.mspr_2025.ui.screens.accessibility.state.SettingsState
+import com.wildlens.mspr_2025.ui.screens.accessibility.state.SettingsViewModel
 
 @Composable
 fun AccessibilityScreen(

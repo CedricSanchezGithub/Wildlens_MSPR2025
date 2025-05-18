@@ -1,9 +1,7 @@
 package com.wildlens.mspr_2025.data.api
 
 import com.wildlens.mspr_2025.data.models.AnimalDataModel
-import com.wildlens.mspr_2025.data.models.ImageItem
 import com.wildlens.mspr_2025.data.models.MetasDataModel
-import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -20,4 +18,14 @@ interface MetaDataApiService {
 interface AnimalTracksApiService {
     @GET("api/images")
     suspend fun getAnimalTracks(@Query("espece") espece: String): AnimalDataModel
+}
+
+interface WildlensETLApiService {
+    @GET("triggermspr")
+    suspend fun triggerETL(): String
+}
+
+interface WildlensMetadataApiService {
+    @GET("triggermetadata")
+    suspend fun triggerMetadata(): String
 }

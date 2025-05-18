@@ -1,13 +1,11 @@
 package com.wildlens.mspr_2025.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.filled.Brightness6
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
@@ -21,11 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.wildlens.mspr_2025.R
-import com.wildlens.mspr_2025.core.langage.AppLanguage
-import com.wildlens.mspr_2025.core.langage.setAppLanguage
 import com.wildlens.mspr_2025.core.navigation.AppRoute
 import com.wildlens.mspr_2025.core.session.SessionViewModel
-import com.wildlens.mspr_2025.core.theme.LocalToggleTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,33 +30,30 @@ fun WildlensTopBar(
 ) {
 
     var expanded by remember { mutableStateOf(false) }
-    val toggleTheme = LocalToggleTheme.current
     val sessionViewModel = hiltViewModel<SessionViewModel>()
-    var showLanguageDialog by remember { mutableStateOf(false) }
 
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
+            containerColor =  MaterialTheme.colorScheme.primary,
             titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
         title = {
             Row(
                 modifier = Modifier.padding(start = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
-
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.iconwhite),
-                    contentDescription = "Logo",
+                    contentDescription = stringResource(id = R.string.app_name)
                 )
                 Spacer(modifier = Modifier.padding(start = 8.dp))
-                Text("Wildlens")
+                Text(stringResource(id = R.string.app_name))
             }
-                },
+        },
         actions = {
             IconButton(onClick = { expanded = true }) {
-                Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+                Icon(Icons.Default.MoreVert, contentDescription = stringResource(id = R.string.menu))
             }
 
             DropdownMenu(
@@ -70,12 +62,9 @@ fun WildlensTopBar(
             ) {
                 DropdownMenuItem(
                     leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Person,
-                            contentDescription = "Profil"
-                        )
+                        Icon(Icons.Default.Person, contentDescription = stringResource(id = R.string.menu_profile))
                     },
-                    text = { Text("Profil") },
+                    text = { Text(stringResource(id = R.string.menu_profile)) },
                     onClick = {
                         expanded = false
                         navController.navigate(AppRoute.Profile.route)
@@ -83,12 +72,9 @@ fun WildlensTopBar(
                 )
                 DropdownMenuItem(
                     leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = "Accessibilité"
-                        )
+                        Icon(Icons.Default.Settings, contentDescription = stringResource(id = R.string.menu_accessibility))
                     },
-                    text = { Text("Paramètres") },
+                    text = { Text(stringResource(id = R.string.menu_settings)) },
                     onClick = {
                         expanded = false
                         navController.navigate(AppRoute.Settings.route)
@@ -96,33 +82,15 @@ fun WildlensTopBar(
                 )
                 DropdownMenuItem(
                     leadingIcon = {
-                        Icon(Icons.Default.Brightness6, contentDescription = "Changer de thème")
-                    },
-                    text = { Text("Thème") },
-                    onClick = { toggleTheme() }
-                )
-
-                DropdownMenuItem(
-                    leadingIcon = {
-                        Icon(Icons.Default.Settings, contentDescription = stringResource(R.string.language))
-                    },
-                    text = { Text(stringResource(R.string.language)) },
-                    onClick = {
-                        expanded = false
-                        showLanguageDialog = true
-                    }
-                )
-
-
-                DropdownMenuItem(
-                    leadingIcon = {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.Logout,
-                            contentDescription = if (isLoggedIn) "Déconnexion" else "Connexion"
+                            Icons.AutoMirrored.Filled.Logout,
+                            contentDescription = stringResource(
+                                id = if (isLoggedIn) R.string.menu_logout else R.string.menu_login
+                            )
                         )
                     },
                     text = {
-                        Text(if (isLoggedIn) "Déconnexion" else "Connexion")
+                        Text(stringResource(id = if (isLoggedIn) R.string.menu_logout else R.string.menu_login))
                     },
                     onClick = {
                         expanded = false
@@ -136,30 +104,5 @@ fun WildlensTopBar(
             }
         }
     )
-    if (showLanguageDialog) {
-        AlertDialog(
-            onDismissRequest = { showLanguageDialog = false },
-            confirmButton = {
-                TextButton(onClick = { showLanguageDialog = false }) {
-                    Text(stringResource(android.R.string.cancel))
-                }
-            }
-            ,
-            title = { Text(stringResource(R.string.language)) },
-            text = {
-                Column {
-                    AppLanguage.entries.forEach { language ->
-                        DropdownMenuItem(
-                            text = { Text(stringResource(id = language.labelRes)) },
-                            onClick = {
-                                setAppLanguage(navController.context, language)
-                                showLanguageDialog = false
-                            }
-                        )
-                    }
-                }
-            }
-        )
-    }
 }
 

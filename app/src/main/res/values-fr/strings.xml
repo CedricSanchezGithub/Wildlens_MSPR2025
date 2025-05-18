@@ -21,7 +21,7 @@
     <string name="request_permission">Demander la permission</string>
     <string name="inference_time">Temps d\'inférence : %1$d ms</string>
     <string name="label_with_score">%1$s : %2$d%%</string>
-    <string name="etl_model_info">Informations sur la pipeline ETL et le modèle de machine learning :)</string>
+    <string name="etl_model_info">Centre d\'opérations IA</string>
     <string name="scan_title">Scan de l\'animal %1$s</string>
     <string name="scan_count">Nombre de scans : %1$d</string>
     <string name="choose_animal">Choisir un animal</string>
@@ -36,6 +36,29 @@
     <string name="menu_language">Langue</string>
     <string name="menu_login">Connexion</string>
     <string name="menu_logout">Déconnexion</string>
+    <string name="home">Accueil</string>
+    <string name="menu_accessibility">Accessibilité</string>
+    <string name="animals">Animaux</string>
+    <string name="menu">Menu</string>
+    <string name="ia">I.A</string>
+    <string name="my_scans">Mes scans</string>
+    <string name="start_etl">Démarrer l\'ETL</string>
+    <string name="start_ia">Démarrer l\'entrainement du modèle</string>
+    <string name="start_metadata">Démarrer l\'extraction des métadonnées</string>
+    <string name="accessibility">Accessibilité</string>
+    <string name="high_contrast">Contraste élevé</string>
+    <string name="high_contrast_desc">Améliore la lisibilité avec un contraste renforcé</string>
+    <string name="font_size">Taille de police : %1$s</string>
+    <string name="font_size_large">Grande</string>
+    <string name="font_size_normal">Normale</string>
+    <string name="font_size_desc">Ajuste la taille de la police pour faciliter la lecture</string>
+    <string name="dark_theme">Thème sombre</string>
+    <string name="dark_theme_desc">Utilise un thème sombre pour économiser l\'énergie et reposer les yeux</string>
+    <string name="language_desc">Choisissez la langue de l\'application</string>
+
+
+
+
 
 
 </resources>

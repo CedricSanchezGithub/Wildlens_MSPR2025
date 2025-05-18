@@ -19,3 +19,11 @@ interface MetaDataRepository {
 interface AnimalTracksRepository {
     suspend fun getAnimalTracks(animal: String): AnimalDataModel
 }
+
+interface WildlensETLRepository {
+    suspend fun triggerETL()
+}
+
+interface TriggerMetaDataRepository {
+    suspend fun triggermetadatarepository()
+}

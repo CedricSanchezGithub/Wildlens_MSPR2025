@@ -1,4 +1,6 @@
-package com.wildlens.mspr_2025.ui.screens.settings.state
+package com.wildlens.mspr_2025.ui.screens.accessibility.state
+
+import com.wildlens.mspr_2025.core.langage.AppLanguage
 
 sealed class SettingsState {
     data object Loading : SettingsState()
@@ -9,7 +11,8 @@ sealed class SettingsState {
 data class SettingsUiState(
     val darkTheme: Boolean = false,
     val highContrast: Boolean = false,
-    val fontScale: FontScale = FontScale.NORMAL
+    val fontScale: FontScale = FontScale.NORMAL,
+    val language: AppLanguage = AppLanguage.FRENCH
 )
 
 enum class FontScale(val scale: Float) {

@@ -21,7 +21,7 @@
     <string name="request_permission">Request permission</string>
     <string name="inference_time">Inference time: %1$d ms</string>
     <string name="label_with_score">%1$s: %2$d%%</string>
-    <string name="etl_model_info">Information about the ETL pipeline and machine learning model :)</string>
+    <string name="etl_model_info">IA Operation System</string>
     <string name="scan_title">Animal scan: %1$s</string>
     <string name="scan_count">Number of scans: %1$d</string>
     <string name="lang_fr">Français</string>
@@ -35,5 +35,23 @@
     <string name="menu_language">Language</string>
     <string name="menu_login">Login</string>
     <string name="menu_logout">Logout</string>
-
+    <string name="home">Home</string>
+    <string name="menu_accessibility">Accessibility</string>
+    <string name="animals">Animals</string>
+    <string name="menu">Menu</string>
+    <string name="ia">I.A</string>
+    <string name="my_scans">My Scans</string>
+    <string name="start_etl">Start ETL</string>
+    <string name="start_ia">Start model training</string>
+    <string name="start_metadata">Start metadata extraction</string>
+    <string name="accessibility">Accessibility</string>
+    <string name="high_contrast">High contrast</string>
+    <string name="high_contrast_desc">Improves readability with enhanced contrast</string>
+    <string name="font_size">Font size: %1$s</string>
+    <string name="font_size_large">Large</string>
+    <string name="font_size_normal">Normal</string>
+    <string name="font_size_desc">Adjusts text size for easier reading</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="dark_theme_desc">Uses a dark theme to save energy and reduce eye strain</string>
+    <string name="language_desc">Choose the app\'s language</string>
 </resources>

@@ -1,11 +1,9 @@
 package com.wildlens.mspr_2025.data.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.wildlens.mspr_2025.data.api.AnimalApiService
 import com.wildlens.mspr_2025.data.repository.*
 import com.google.firebase.firestore.FirebaseFirestore
-import com.wildlens.mspr_2025.data.api.AnimalTracksApiService
-import com.wildlens.mspr_2025.data.api.MetaDataApiService
+import com.wildlens.mspr_2025.data.api.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -79,4 +77,27 @@ object RepositoryModule {
     @Singleton
     fun provideAnimalTracksApiService(retrofit: Retrofit): AnimalTracksApiService =
         retrofit.create(AnimalTracksApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideWildlensETLRepository(
+        impl: WildlensETLRepositoryImpl
+    ): WildlensETLRepository = impl
+
+    @Provides
+    @Singleton
+    fun provideWildlensETLApiService(retrofit: Retrofit): WildlensETLApiService =
+        retrofit.create(WildlensETLApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideTriggerMetaDataRepository(
+        impl: TriggerMetaDataRepositoryImpl
+    ): TriggerMetaDataRepository = impl
+
+    @Provides
+    @Singleton
+    fun provideTriggerMetaDataApiService(retrofit: Retrofit): WildlensMetadataApiService =
+        retrofit.create(WildlensMetadataApiService::class.java)
 }
+

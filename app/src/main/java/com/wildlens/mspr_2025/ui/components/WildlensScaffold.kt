@@ -4,14 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddAPhoto
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -21,7 +14,6 @@ import androidx.navigation.NavController
 import com.wildlens.mspr_2025.core.navigation.AppRoute
 import com.wildlens.mspr_2025.core.session.SessionViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WildlensScaffold(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },

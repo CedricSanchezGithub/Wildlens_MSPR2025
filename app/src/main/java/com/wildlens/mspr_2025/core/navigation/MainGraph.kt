@@ -12,7 +12,7 @@ import com.wildlens.mspr_2025.ui.screens.home.presentation.HomeScreen
 import com.wildlens.mspr_2025.ui.screens.iascreen.presentation.IAScreen
 import com.wildlens.mspr_2025.ui.screens.myscans.presentation.MyScansScreen
 import com.wildlens.mspr_2025.ui.screens.profile.presentation.ProfileScreen
-import com.wildlens.mspr_2025.ui.screens.settings.presentation.AccessibilityScreen
+import com.wildlens.mspr_2025.ui.screens.accessibility.presentation.AccessibilityScreen
 
 @Composable
 fun MainGraph(
