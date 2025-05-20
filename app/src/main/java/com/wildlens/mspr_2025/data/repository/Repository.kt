@@ -2,6 +2,7 @@ package com.wildlens.mspr_2025.data.repository
 
 import com.wildlens.mspr_2025.data.models.AnimalDataModel
 import com.wildlens.mspr_2025.data.models.MetasDataModel
+import com.wildlens.mspr_2025.data.models.TriggerResponse
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {
@@ -21,9 +22,10 @@ interface AnimalTracksRepository {
 }
 
 interface WildlensETLRepository {
-    suspend fun triggerETL()
+    suspend fun triggerETL(): TriggerResponse
 }
 
-interface TriggerMetaDataRepository {
-    suspend fun triggermetadatarepository()
+
+interface WildlensMetaDataRepository {
+    suspend fun triggermetadata() : TriggerResponse
 }

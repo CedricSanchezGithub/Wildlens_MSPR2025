@@ -13,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.wildlens.mspr_2025.R
-import com.wildlens.mspr_2025.core.theme.LocalToggleTheme
 import com.wildlens.mspr_2025.ui.screens.iascreen.state.IAState
 import com.wildlens.mspr_2025.ui.screens.iascreen.state.IAViewModel
 
@@ -22,6 +21,10 @@ fun IAScreenSuccess(
     uiModel: IAState.Success,
     viewModel: IAViewModel = hiltViewModel()
 ) {
+    val triggeretlstatus = uiModel.triggeretlstatus
+    val triggermetadatastatus = uiModel.triggermetadatastatus
+    val triggermachinelearning = uiModel.triggermetadatastatus
+
     Column(
         modifier = Modifier.padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -33,6 +36,9 @@ fun IAScreenSuccess(
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = stringResource(R.string.etl_model_info))
         Spacer(modifier = Modifier.height(8.dp))
+        if (triggeretlstatus != null) {
+            Text(text = triggeretlstatus)
+        }
         Button(
             onClick = { viewModel.triggerETL() },
             modifier = Modifier
@@ -42,6 +48,9 @@ fun IAScreenSuccess(
             Text(text = stringResource(R.string.start_etl))
         }
         Spacer(modifier = Modifier.height(8.dp))
+        if (triggermetadatastatus != null) {
+            Text(text = triggermetadatastatus)
+        }
         Button(
             onClick = { viewModel.triggermetadata() },
             modifier = Modifier
@@ -51,6 +60,9 @@ fun IAScreenSuccess(
             Text(text = stringResource(R.string.start_ia))
         }
         Spacer(modifier = Modifier.height(8.dp))
+        if (triggermachinelearning != null) {
+            Text(text = triggermachinelearning)
+        }
         Button(
             onClick = { viewModel.triggermetadata() },
             modifier = Modifier

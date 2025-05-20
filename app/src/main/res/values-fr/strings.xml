@@ -55,7 +55,12 @@
     <string name="dark_theme">Thème sombre</string>
     <string name="dark_theme_desc">Utilise un thème sombre pour économiser l\'énergie et reposer les yeux</string>
     <string name="language_desc">Choisissez la langue de l\'application</string>
-
+    <string name="history_title">Historique des classifications</string>
+    <string name="clear_history">Effacer l\'historique</string>
+    <string name="no_history">Aucune classification enregistrée</string>
+    <string name="inference_time_ms">%1$d ms</string>
+    <string name="view_history">Voir l\'historique</string>
+    <string name="current_results">Résultats actuels</string>
 
 
 

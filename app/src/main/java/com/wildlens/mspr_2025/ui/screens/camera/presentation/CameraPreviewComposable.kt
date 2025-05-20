@@ -23,9 +23,9 @@ import org.tensorflow.lite.task.vision.classifier.Classifications
  * Composable affichant l’aperçu de la caméra via CameraX et PreviewView.
  *
  * Cette fonction configure les use cases de CameraX :
- * - Preview : pour afficher le flux caméra
- * - ImageCapture : pour prendre des photos (exposé via le callback onImageCaptureReady)
- * - ImageAnalysis : pour effectuer une classification d’images en temps réel avec TensorFlow Lite
+ *  Preview : pour afficher le flux caméra
+ *  ImageCapture : pour prendre des photos (exposé via le callback onImageCaptureReady)
+ *  ImageAnalysis : pour effectuer une classification d’images en temps réel avec TensorFlow Lite
  *
  * @param lifecycleOwner L’observateur de cycle de vie utilisé pour lier les use cases
  * @param modifier Modificateur d'affichage du composant
@@ -36,7 +36,6 @@ import org.tensorflow.lite.task.vision.classifier.Classifications
  * @param onResults Callback appelé à chaque résultat de classification avec le temps d’inférence
  * @param onImageCaptureReady Callback exposant l’instance d’ImageCapture pour la capture de photo
  */
-
 
 lateinit var imageCapture: ImageCapture
 

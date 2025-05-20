@@ -61,7 +61,7 @@ fun HomeScreen(
         ) {
             when (val state = uiState) {
                 is HomeState.Loading -> CircularProgressIndicator()
-                is HomeState.Success<String> -> HomeScreenSuccess(text = state.data)
+                is HomeState.Success<String> -> HomeScreenSuccess(navController)
                 is HomeState.Error -> Text(state.message)
             }
         }

@@ -1,17 +1,15 @@
 package com.wildlens.mspr_2025.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AddAPhoto
-import androidx.compose.material3.*
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.wildlens.mspr_2025.core.navigation.AppRoute
 import com.wildlens.mspr_2025.core.session.SessionViewModel
 
 @Composable
@@ -26,16 +24,6 @@ fun WildlensScaffold(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate(AppRoute.Camera.route) },
-                containerColor = MaterialTheme.colorScheme.primary,
-                shape = CircleShape
-            ) {
-                Icon(Icons.Rounded.AddAPhoto, contentDescription = "Ajouter une photo")
-            }
-        },
-        floatingActionButtonPosition = FabPosition.Center,
         topBar = {
             WildlensTopBar(
                 navController = navController,

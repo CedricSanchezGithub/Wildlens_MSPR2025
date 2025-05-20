@@ -36,7 +36,7 @@ fun WildlensTopBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor =  MaterialTheme.colorScheme.primary,
             titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         title = {
             Row(
@@ -53,7 +53,8 @@ fun WildlensTopBar(
         },
         actions = {
             IconButton(onClick = { expanded = true }) {
-                Icon(Icons.Default.MoreVert, contentDescription = stringResource(id = R.string.menu))
+                Icon(Icons.Default.MoreVert,
+                    contentDescription = stringResource(id = R.string.menu))
             }
 
             DropdownMenu(

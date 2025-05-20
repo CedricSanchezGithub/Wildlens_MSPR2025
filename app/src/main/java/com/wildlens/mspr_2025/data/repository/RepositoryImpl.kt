@@ -3,6 +3,7 @@ package com.wildlens.mspr_2025.data.repository
 import com.wildlens.mspr_2025.data.api.*
 import com.wildlens.mspr_2025.data.models.AnimalDataModel
 import com.wildlens.mspr_2025.data.models.MetasDataModel
+import com.wildlens.mspr_2025.data.models.TriggerResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +14,7 @@ import javax.inject.Inject
 class RepositoryImpl @Inject constructor() : Repository {
     override fun getMessage(): Flow<String> = flow {
         delay(1000)
-        emit("Hello from the Data Layer 🐾")
+        emit(" Bienvenue sur Wildlens")
     }
 }
 
@@ -43,17 +44,15 @@ class AnimalTracksRepositoryImpl @Inject constructor(
 class WildlensETLRepositoryImpl @Inject constructor(
     private val api: WildlensETLApiService
 ) : WildlensETLRepository {
-    override suspend fun triggerETL() = withContext(Dispatchers.IO) {
+    override suspend fun triggerETL() : TriggerResponse = withContext(Dispatchers.IO) {
         api.triggerETL()
-        Unit
     }
 }
 
-class TriggerMetaDataRepositoryImpl @Inject constructor(
+class WildlensMetaDataRepositoryImpl @Inject constructor(
     private val api: WildlensMetadataApiService
-) : TriggerMetaDataRepository {
-    override suspend fun triggermetadatarepository() = withContext(Dispatchers.IO) {
+) : WildlensMetaDataRepository {
+    override suspend fun triggermetadata() : TriggerResponse = withContext(Dispatchers.IO) {
         api.triggerMetadata()
-        Unit
     }
 }

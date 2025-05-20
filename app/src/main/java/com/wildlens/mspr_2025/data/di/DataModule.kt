@@ -92,8 +92,8 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideTriggerMetaDataRepository(
-        impl: TriggerMetaDataRepositoryImpl
-    ): TriggerMetaDataRepository = impl
+        impl: WildlensMetaDataRepositoryImpl
+    ): WildlensMetaDataRepository = impl
 
     @Provides
     @Singleton

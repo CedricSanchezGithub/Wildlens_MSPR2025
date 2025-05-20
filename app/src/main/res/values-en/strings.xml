@@ -54,4 +54,10 @@
     <string name="dark_theme">Dark theme</string>
     <string name="dark_theme_desc">Uses a dark theme to save energy and reduce eye strain</string>
     <string name="language_desc">Choose the app\'s language</string>
+    <string name="history_title">Classification History</string>
+    <string name="clear_history">Clear history</string>
+    <string name="no_history">No classifications recorded</string>
+    <string name="inference_time_ms">%1$d ms</string>
+    <string name="view_history">View history</string>
+    <string name="current_results">Current results</string>
 </resources>

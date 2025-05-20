@@ -53,19 +53,4 @@ class MyScansViewModel @Inject constructor(
             }
         }
     }
-
-
-//    private fun fetchAnimalsTracks() {
-//        viewModelScope.launch {
-//            try {
-//                val tracks = animalTracksRepository.getAnimalTracks()
-//                _uiState.value = MyScansState.Success(
-//                    message = "Images chargées avec succès",
-//                    imagesTracks = tracks
-//                )
-//            } catch (e: Exception) {
-//                _uiState.value = MyScansState.Error("Erreur de chargement : ${e.message}")
-//            }
-//        }
-//    }
 }
