@@ -19,7 +19,7 @@ import javax.inject.Singleton
 object RepositoryModule {
 
     @Provides
-    fun provideBaseUrl(): String = "http://90.51.140.217:5000/"
+    fun provideBaseUrl(): String = "http://90.51.140.217:5001/"
 
     @OptIn(ExperimentalSerializationApi::class)
     @Provides
@@ -99,5 +99,16 @@ object RepositoryModule {
     @Singleton
     fun provideTriggerMetaDataApiService(retrofit: Retrofit): WildlensMetadataApiService =
         retrofit.create(WildlensMetadataApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSpeciesListRepository(
+        impl: WildlensSpeciesListRepositoryImpl
+    ): WildlensSpeciesListRepository = impl
+
+    @Provides
+    @Singleton
+    fun provideSpeciesListApiService(retrofit: Retrofit): WildlensSpeciesListApiService =
+        retrofit.create(WildlensSpeciesListApiService::class.java)
 }
 

@@ -2,6 +2,7 @@ package com.wildlens.mspr_2025.data.api
 
 import com.wildlens.mspr_2025.data.models.AnimalDataModel
 import com.wildlens.mspr_2025.data.models.MetasDataModel
+import com.wildlens.mspr_2025.data.models.Species
 import com.wildlens.mspr_2025.data.models.TriggerResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -29,4 +30,9 @@ interface WildlensETLApiService {
 interface WildlensMetadataApiService {
     @GET("triggermetadata")
     suspend fun triggerMetadata(): TriggerResponse
+}
+
+interface WildlensSpeciesListApiService {
+    @GET("api/especes")
+    suspend fun getSpeciesList(): Species
 }

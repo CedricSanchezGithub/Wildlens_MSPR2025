@@ -38,28 +38,9 @@ fun MyScansScreenSuccess(
     uiModel: MyScansState.Success,
     onAnimalSelected: (String) -> Unit
 ) {
-
-    val animals = listOf(
-        "beaver",
-        "black_bear",
-        "bob_cat",
-        "coyote",
-        "goose",
-        "gray_fox",
-        "horse",
-        "lion",
-        "mink",
-        "mouse",
-        "muledeer",
-        "otter",
-        "raccoon",
-        "rat",
-        "skunk",
-        "turkey",
-        "western_grey_squirrel"
-    )
+    val speciesList = uiModel.data.speces.species.map { it }
     var expanded by remember { mutableStateOf(false) }
-    var selectedAnimal by remember { mutableStateOf(animals.first()) }
+    var selectedAnimal by remember { mutableStateOf(speciesList.firstOrNull().orEmpty()) }
 
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -82,7 +63,7 @@ fun MyScansScreenSuccess(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                animals.forEach { animal ->
+                speciesList.forEach { animal ->
                     DropdownMenuItem(
                         text = { Text(animal) },
                         onClick = {
@@ -102,41 +83,38 @@ fun MyScansScreenSuccess(
             contentPadding = PaddingValues(8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            item {
+                uiModel.data.imagesTracks?.let { imagesTracks ->
+                    Text(
+                        text = stringResource(R.string.scan_count, imagesTracks.images.size),
+                        style = MaterialTheme.typography.headlineSmall,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
 
-            item {
-                Text(
-                    text = stringResource(R.string.scan_title, uiModel.imagesTracks.nomFr),
-                    style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.padding(8.dp)
-                )
-            }
-            item {
-                Text(
-                    text = stringResource(R.string.scan_count, uiModel.imagesTracks.images.size),
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.padding(8.dp)
-                )
             }
 
-            items(uiModel.imagesTracks.images.size) { index ->
-                val scan = uiModel.imagesTracks.images[index]
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp))
-                        .padding(8.dp)
-                ) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data("http://90.51.140.217:5000/${scan.url}")
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = null,
+            uiModel.data.imagesTracks?.images?.let {
+                items(it.size) { index ->
+                    val scan = uiModel.data.imagesTracks.images[index]
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp)
                             .clip(RoundedCornerShape(8.dp))
-                    )
+                            .padding(8.dp)
+                    ) {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data("http://90.51.140.217:5001/${scan.url}")
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                        )
+                    }
                 }
             }
         }

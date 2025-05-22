@@ -3,6 +3,7 @@ package com.wildlens.mspr_2025.data.repository
 import com.wildlens.mspr_2025.data.api.*
 import com.wildlens.mspr_2025.data.models.AnimalDataModel
 import com.wildlens.mspr_2025.data.models.MetasDataModel
+import com.wildlens.mspr_2025.data.models.Species
 import com.wildlens.mspr_2025.data.models.TriggerResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -54,5 +55,13 @@ class WildlensMetaDataRepositoryImpl @Inject constructor(
 ) : WildlensMetaDataRepository {
     override suspend fun triggermetadata() : TriggerResponse = withContext(Dispatchers.IO) {
         api.triggerMetadata()
+    }
+}
+
+class WildlensSpeciesListRepositoryImpl @Inject constructor(
+    private val api: WildlensSpeciesListApiService
+) : WildlensSpeciesListRepository {
+    override suspend fun getSpeciesList(): Species = withContext(Dispatchers.IO) {
+        api.getSpeciesList()
     }
 }

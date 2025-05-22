@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import com.wildlens.mspr_2025.ui.components.WildlensScaffold
 import com.wildlens.mspr_2025.ui.screens.myscans.state.MyScansState
 import com.wildlens.mspr_2025.ui.screens.myscans.state.MyScansViewModel
+import org.tensorflow.lite.TensorFlowLite.init
 
 @Composable
 fun MyScansScreen(
