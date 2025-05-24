@@ -10,10 +10,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
-import com.wildlens.mspr_2025.core.navigation.MainGraph
-import com.wildlens.mspr_2025.core.navigation.StartDestinationProvider
-import com.wildlens.mspr_2025.core.theme.LocalToggleTheme
-import com.wildlens.mspr_2025.core.theme.MSPR_2025Theme
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.wildlens.mspr_2025.domain.navigation.MainGraph
+import com.wildlens.mspr_2025.domain.navigation.StartDestinationProvider
+import com.wildlens.mspr_2025.presentation.screens.accessibility.state.AccessibilityViewModel
+import com.wildlens.mspr_2025.presentation.theme.LocalToggleTheme
+import com.wildlens.mspr_2025.presentation.theme.MSPR_2025Theme
 import dagger.hilt.android.AndroidEntryPoint
 import jakarta.inject.Inject
 
@@ -30,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
+
+            val viewModel: AccessibilityViewModel = hiltViewModel()
+            val settingsUiState by viewModel.settingsUiState.collectAsState()
             val systemInDarkTheme = isSystemInDarkTheme()
             var isDarkTheme by remember { mutableStateOf(systemInDarkTheme) }
             val startDestination = startDestinationProvider.getStartDestination()
@@ -39,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 MSPR_2025Theme(
                     darkTheme = isDarkTheme,
-                    highContrastMode = false,
+                    highContrastMode = settingsUiState.highContrast
                 ) {
                     Surface(
                         modifier = Modifier.fillMaxSize()
