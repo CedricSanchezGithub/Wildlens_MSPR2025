@@ -60,5 +60,7 @@
     <string name="inference_time_ms">%1$d ms</string>
     <string name="view_history">Voir l\'historique</string>
     <string name="current_results">Résultats actuels</string>
-
+    <string name="app_tagline">Identify animal tracks using Artificial Intelligence</string>
+    <string name="scan_button">Scan a track</string>
+    
 </resources>

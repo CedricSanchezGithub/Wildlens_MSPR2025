@@ -61,6 +61,7 @@
     <string name="inference_time_ms">%1$d ms</string>
     <string name="view_history">Voir l\'historique</string>
     <string name="current_results">Résultats actuels</string>
-
+    <string name="app_tagline">Identifiez les empreintes animales grâce à l\'Intelligence Artificielle</string>
+    <string name="scan_button">Scanner une empreinte</string>
 
 </resources>

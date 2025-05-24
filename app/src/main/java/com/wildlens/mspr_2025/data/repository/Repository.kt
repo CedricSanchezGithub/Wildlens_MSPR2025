@@ -5,6 +5,7 @@ import com.wildlens.mspr_2025.data.models.MetasDataModel
 import com.wildlens.mspr_2025.data.models.Species
 import com.wildlens.mspr_2025.data.models.TriggerResponse
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 
 interface Repository {
     fun getMessage(): Flow<String>
@@ -33,3 +34,9 @@ interface WildlensMetaDataRepository {
 interface WildlensSpeciesListRepository {
     suspend fun getSpeciesList(): Species
 }
+
+interface ImageUploadRepository {
+    suspend fun uploadImage(file: File): Boolean
+}
+
+

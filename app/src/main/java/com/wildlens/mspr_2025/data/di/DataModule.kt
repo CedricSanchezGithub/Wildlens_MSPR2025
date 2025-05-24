@@ -110,5 +110,17 @@ object RepositoryModule {
     @Singleton
     fun provideSpeciesListApiService(retrofit: Retrofit): WildlensSpeciesListApiService =
         retrofit.create(WildlensSpeciesListApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideImageUploadApiService(retrofit: Retrofit): ImageUploadApiService =
+        retrofit.create(ImageUploadApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideImageUploadRepository(
+        impl: ImageUploadRepositoryImpl
+    ): ImageUploadRepository = impl
+
 }
 
