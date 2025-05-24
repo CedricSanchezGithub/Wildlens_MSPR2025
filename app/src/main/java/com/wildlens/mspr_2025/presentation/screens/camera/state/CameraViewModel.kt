@@ -3,6 +3,7 @@ package com.wildlens.mspr_2025.presentation.screens.camera.state
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.wildlens.mspr_2025.data.models.UploadResponse
 import com.wildlens.mspr_2025.data.repository.ImageUploadRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -24,6 +25,9 @@ data class ClassificationResult(
 class ScanViewModel @Inject constructor(
     private val imageUploadRepository: ImageUploadRepository
 ) : ViewModel() {
+
+    private val _lastPrediction = MutableStateFlow<String?>(null)
+    val lastPrediction = _lastPrediction.asStateFlow()
 
     private val _results = MutableStateFlow<List<Classifications>>(emptyList())
     val results = _results.asStateFlow()
@@ -52,6 +56,10 @@ class ScanViewModel @Inject constructor(
         if (results != null) {
             _results.value = results
             _inferenceTime.value = timeMs
+            _lastPrediction.value = results.firstOrNull()
+                ?.categories
+                ?.maxByOrNull { it.score }
+                ?.label
 
             // Ne sauvegarder que les résultats avec au moins une catégorie et un score significatif
             if (results.isNotEmpty() && results.first().categories.isNotEmpty() &&
@@ -67,14 +75,17 @@ class ScanViewModel @Inject constructor(
         }
     }
 
-    fun uploadCapturedImage(file: File, onResult: (Boolean) -> Unit) {
+    fun uploadCapturedImage(file: File, onResult: (UploadResponse?) -> Unit) {
+        val classification = lastPrediction.value ?: "unknown"
         viewModelScope.launch {
             _isLoading.value = true
-            val success = imageUploadRepository.uploadImage(file)
+            val response = imageUploadRepository.uploadImage(file, classification)
             _isLoading.value = false
-            onResult(success)
+            onResult(response)
         }
     }
+
+
 
     fun updateModel(index: Int) {
         _modelIndex.value = index

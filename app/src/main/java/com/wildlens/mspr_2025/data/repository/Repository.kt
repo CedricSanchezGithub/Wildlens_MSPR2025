@@ -1,9 +1,6 @@
 package com.wildlens.mspr_2025.data.repository
 
-import com.wildlens.mspr_2025.data.models.AnimalDataModel
-import com.wildlens.mspr_2025.data.models.MetasDataModel
-import com.wildlens.mspr_2025.data.models.Species
-import com.wildlens.mspr_2025.data.models.TriggerResponse
+import com.wildlens.mspr_2025.data.models.*
 import kotlinx.coroutines.flow.Flow
 import java.io.File
 
@@ -36,7 +33,7 @@ interface WildlensSpeciesListRepository {
 }
 
 interface ImageUploadRepository {
-    suspend fun uploadImage(file: File): Boolean
+    suspend fun uploadImage(file: File, classification: String): UploadResponse?
 }
 
 
