@@ -55,7 +55,7 @@ fun BottomControlsPanel(
                     onPhotoCaptured = { uri ->
                         val file = File(uri.path ?: return@CaptureButton)
                         viewModel.uploadCapturedImage(file) { success ->
-                            val msg = if (success) "Image envoyée avec succès" else "Échec de l'envoi"
+                            val msg = if (success?.success == true) "Image de ${viewModel.lastPrediction.value} envoyée avec succès" else "Échec de l'envoi"
                             Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                         }
                     }

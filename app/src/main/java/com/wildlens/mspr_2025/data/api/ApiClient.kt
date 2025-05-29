@@ -2,6 +2,7 @@ package com.wildlens.mspr_2025.data.api
 
 import com.wildlens.mspr_2025.data.models.*
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface AnimalApiService {
@@ -38,6 +39,8 @@ interface ImageUploadApiService {
     @Multipart
     @POST("photo_download")
     suspend fun uploadImage(
-        @Part image: MultipartBody.Part
+        @Part file: MultipartBody.Part,
+        @Part("classification") classification: RequestBody
     ): UploadResponse
+
 }

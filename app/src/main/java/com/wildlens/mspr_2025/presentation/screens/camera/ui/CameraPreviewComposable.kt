@@ -1,6 +1,3 @@
-package com.wildlens.mspr_2025.presentation.screens.camera.ui
-
-import android.content.Context
 import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -9,74 +6,80 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
 import com.wildlens.mspr_2025.domain.camerax.imageclassification.CameraImageAnalyzer
-import com.wildlens.mspr_2025.domain.camerax.imageclassification.ImageClassifierHelper
 import com.wildlens.mspr_2025.domain.camerax.imageclassification.ClassifierListener
+import com.wildlens.mspr_2025.domain.camerax.imageclassification.ImageClassifierHelper
 import com.wildlens.mspr_2025.presentation.screens.camera.state.ScanViewModel
 import org.tensorflow.lite.task.vision.classifier.Classifications
+import java.util.concurrent.Executors
 
 /**
- * Composable affichant l’aperçu de la caméra via CameraX et PreviewView.
+ * Composable that displays the camera preview using CameraX and PreviewView.
  *
- * Cette fonction configure les use cases de CameraX :
- *  Preview : pour afficher le flux caméra
- *  ImageCapture : pour prendre des photos (exposé via le callback onImageCaptureReady)
- *  ImageAnalysis : pour effectuer une classification d’images en temps réel avec TensorFlow Lite
+ * This function sets up CameraX use cases:
+ *  - Preview: To display the camera stream.
+ *  - ImageCapture: To take photos (exposed via onImageCaptureReady callback).
+ *  - ImageAnalysis: To perform real-time image classification with TensorFlow Lite.
  *
- * @param lifecycleOwner L’observateur de cycle de vie utilisé pour lier les use cases
- * @param modifier Modificateur d'affichage du composant
- * @param context Contexte Android requis pour CameraX et TFLite
- * @param modelIndex Index du modèle de classification sélectionné
- * @param delegateIndex Index du délégué d’inférence (CPU/GPU/NNAPI)
- * @param viewModel ViewModel utilisé pour suivre l’état de chargement
- * @param onResults Callback appelé à chaque résultat de classification avec le temps d’inférence
- * @param onImageCaptureReady Callback exposant l’instance d’ImageCapture pour la capture de photo
+ * @param modifier Modifier for this composable.
+ * @param modelIndex Index of the selected classification model.
+ * @param delegateIndex Index of the inference delegate (CPU/GPU/NNAPI).
+ * @param viewModel ViewModel used to track loading state and errors.
+ * @param onResults Callback invoked with classification results and inference time.
+ * @param onImageCaptureReady Callback exposing the ImageCapture instance for photo capture.
  */
-
-lateinit var imageCapture: ImageCapture
-
 @Composable
 fun CameraPreviewComposable(
-    lifecycleOwner: LifecycleOwner,
     modifier: Modifier = Modifier,
-    context: Context,
     modelIndex: Int,
     delegateIndex: Int,
     viewModel: ScanViewModel,
     onResults: (List<Classifications>?, Long) -> Unit,
     onImageCaptureReady: (ImageCapture) -> Unit
 ) {
-    AndroidView(
-        modifier = modifier,
-        factory = { ctx ->
-            val previewView = PreviewView(ctx)
-            val cameraProviderFuture = ProcessCameraProvider.getInstance(ctx)
+    val currentContext = LocalContext.current
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    val previewView = remember { PreviewView(currentContext) }
+    // var imageCaptureInstance by remember { mutableStateOf<ImageCapture?>(null) } // No longer needed if passed directly
 
-            cameraProviderFuture.addListener({
+    // Remember a dedicated executor for image analysis
+    val cameraExecutor = remember { Executors.newSingleThreadExecutor() }
+
+    DisposableEffect(lifecycleOwner, modelIndex, delegateIndex, currentContext) {
+        lateinit var imageCapture: ImageCapture // Local to DisposableEffect
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(currentContext)
+
+        val cameraProviderListener = Runnable {
+            try {
                 val cameraProvider = cameraProviderFuture.get()
-                val preview = Preview.Builder().build().apply {
-                    surfaceProvider = previewView.surfaceProvider
+
+                val preview = Preview.Builder().build().also {
+                    it.surfaceProvider = previewView.surfaceProvider
                 }
 
                 imageCapture = ImageCapture.Builder().build()
+                // imageCaptureInstance = imageCapture // Not strictly needed if only using callback
                 onImageCaptureReady(imageCapture)
 
                 val imageClassifierHelper = ImageClassifierHelper(
-                    context = ctx,
+                    context = currentContext,
                     currentModel = modelIndex,
                     currentDelegate = delegateIndex,
-                    viewModel = viewModel,
+                    viewModel = viewModel, // viewModel can be passed directly
                     imageClassifierListener = object : ClassifierListener {
                         override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
                             onResults(results, inferenceTime)
                         }
 
                         override fun onError(error: String) {
-                            Log.e("CameraPreview", error)
+                            Log.e("CameraPreview", "Classifier Error: $error")
+                            viewModel.setError("Classifier Error: $error") // Update ViewModel
                         }
 
                         override fun onLoading() {
@@ -92,30 +95,43 @@ fun CameraPreviewComposable(
                 val imageAnalysis = ImageAnalysis.Builder()
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build()
-                    .apply {
-                        setAnalyzer(
-                            ContextCompat.getMainExecutor(ctx),
+                    .also {
+                        it.setAnalyzer(
+                            cameraExecutor, // Use background executor for analysis
                             CameraImageAnalyzer(imageClassifierHelper)
                         )
                     }
 
                 val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
-                try {
-                    cameraProvider.unbindAll()
-                    cameraProvider.bindToLifecycle(
-                        lifecycleOwner,
-                        cameraSelector,
-                        preview,
-                        imageAnalysis,
-                        imageCapture
-                    )
-                } catch (e: Exception) {
-                    Log.e("CameraX", "Échec du bind des use cases", e)
-                }
-            }, ContextCompat.getMainExecutor(ctx))
-
-            previewView
+                cameraProvider.unbindAll() // Unbind previous use cases before binding new ones
+                cameraProvider.bindToLifecycle(
+                    lifecycleOwner,
+                    cameraSelector,
+                    preview,
+                    imageAnalysis,
+                    imageCapture
+                )
+            } catch (e: Exception) {
+                Log.e("CameraX", "Use case binding failed", e)
+                viewModel.setError("Camera setup failed: ${e.localizedMessage}")
+            }
         }
+
+        cameraProviderFuture.addListener(cameraProviderListener, ContextCompat.getMainExecutor(currentContext))
+
+        onDispose {
+            // Shut down the executor
+            cameraExecutor.shutdown()
+            // Unbind camera use cases
+            cameraProviderFuture.addListener({
+                cameraProviderFuture.get()?.unbindAll()
+            }, ContextCompat.getMainExecutor(currentContext))
+        }
+    }
+
+    AndroidView(
+        factory = { previewView },
+        modifier = modifier
     )
 }

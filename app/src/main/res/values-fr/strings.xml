@@ -63,5 +63,6 @@
     <string name="current_results">Résultats actuels</string>
     <string name="app_tagline">Identifiez les empreintes animales grâce à l\'Intelligence Artificielle</string>
     <string name="scan_button">Scanner une empreinte</string>
+    <string name="track_photos_count">%1$d photos d\'empreintes de %2$s</string>
 
 </resources>

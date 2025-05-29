@@ -23,7 +23,7 @@
     <string name="label_with_score">%1$s : %2$d%%</string>
     <string name="etl_model_info">Centre d\'opérations IA</string>
     <string name="scan_title">Scan de l\'animal %1$s</string>
-    <string name="scan_count">Nombre de scans : %1$d</string>
+    <string name="scan_count">Nombre de scans total: %1$d</string>
     <string name="choose_animal">Choisir un animal</string>
     <string name="lang_fr">Français</string>
     <string name="lang_en">English</string>
@@ -62,5 +62,6 @@
     <string name="current_results">Résultats actuels</string>
     <string name="app_tagline">Identify animal tracks using Artificial Intelligence</string>
     <string name="scan_button">Scan a track</string>
-    
+    <string name="track_photos_count">%1$d photos d\'empreintes de %2$s</string>
+
 </resources>
