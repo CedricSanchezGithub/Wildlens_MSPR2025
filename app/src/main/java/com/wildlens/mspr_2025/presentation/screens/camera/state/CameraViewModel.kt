@@ -47,6 +47,9 @@ class ScanViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
+    private val _error = MutableStateFlow<String?>(null)
+    val error = _error.asStateFlow()
+
     private val dateFormatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 
     // Limiter l'historique à un certain nombre d'éléments
@@ -79,13 +82,17 @@ class ScanViewModel @Inject constructor(
         val classification = lastPrediction.value ?: "unknown"
         viewModelScope.launch {
             _isLoading.value = true
-            val response = imageUploadRepository.uploadImage(file, classification)
-            _isLoading.value = false
-            onResult(response)
+            try {
+                val response = imageUploadRepository.uploadImage(file, classification)
+                onResult(response)
+            } catch (e: Exception) {
+                _error.value = "Upload failed: ${e.localizedMessage}"
+                onResult(null)
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
-
-
 
     fun updateModel(index: Int) {
         _modelIndex.value = index
@@ -97,6 +104,10 @@ class ScanViewModel @Inject constructor(
 
     fun setLoading(loading: Boolean) {
         _isLoading.value = loading
+    }
+
+    fun setError(errorMessage: String?) {
+        _error.value = errorMessage
     }
 
     fun clearHistory() {

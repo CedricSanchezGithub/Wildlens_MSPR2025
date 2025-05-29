@@ -1,5 +1,6 @@
 package com.wildlens.mspr_2025.presentation.screens.camera.ui
 
+import CameraPreviewComposable
 import android.Manifest
 import android.content.Context
 import android.net.Uri
@@ -25,8 +26,6 @@ import org.tensorflow.lite.gpu.CompatibilityList
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreen(
-    modifier: Modifier = Modifier,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     context: Context = LocalContext.current,
     viewModel: ScanViewModel = hiltViewModel(),
 ) {
@@ -52,8 +51,6 @@ fun CameraScreen(
         permissionsState.allPermissionsGranted -> {
             Box(modifier = Modifier.fillMaxSize()) {
                 CameraPreviewComposable(
-                    lifecycleOwner = lifecycleOwner,
-                    context = context,
                     onResults = { classifications, timeMs ->
                         viewModel.onNewResults(classifications, timeMs)
                     },
