@@ -1,5 +1,6 @@
 package com.wildlens.mspr_2025.presentation.screens.camera.ui
 
+import android.content.Context
 import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -8,151 +9,116 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import com.wildlens.mspr_2025.domain.camerax.imageclassification.CameraImageAnalyzer
-import com.wildlens.mspr_2025.domain.camerax.imageclassification.ClassifierListener
 import com.wildlens.mspr_2025.domain.camerax.imageclassification.ImageClassifierHelper
+import com.wildlens.mspr_2025.domain.camerax.imageclassification.ClassifierListener
 import com.wildlens.mspr_2025.presentation.screens.camera.state.ScanViewModel
 import org.tensorflow.lite.task.vision.classifier.Classifications
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 /**
- * Composable qui affiche le flux de la caméra et exécute l'analyse en temps réel.
+ * Composable affichant l’aperçu de la caméra via CameraX et PreviewView.
  *
- * Cette fonction met en place les cas d'usage CameraX suivants :
- * - Preview : affiche le flux vidéo en direct.
- * - ImageCapture : permet la capture de photos (via callback).
- * - ImageAnalysis : analyse chaque frame en temps réel pour classifier l'image via un modèle TFLite.
+ * Cette fonction configure les use cases de CameraX :
+ *  Preview : pour afficher le flux caméra
+ *  ImageCapture : pour prendre des photos (exposé via le callback onImageCaptureReady)
+ *  ImageAnalysis : pour effectuer une classification d’images en temps réel avec TensorFlow Lite
  *
- * Le modèle et le délégué sont configurables dynamiquement. L'analyse se fait sur un thread dédié
- * pour éviter de bloquer le thread principal.
- *
- * @param modifier Modificateur d'affichage.
- * @param modelIndex Index du modèle de classification sélectionné.
- * @param delegateIndex Type de délégué (CPU, GPU, NNAPI).
- * @param viewModel ViewModel pour les états de chargement/erreur/résultats.
- * @param onResults Callback déclenché avec les résultats de classification.
- * @param onImageCaptureReady Callback fournissant l'objet ImageCapture pour prendre des photos.
+ * @param lifecycleOwner L’observateur de cycle de vie utilisé pour lier les use cases
+ * @param modifier Modificateur d'affichage du composant
+ * @param context Contexte Android requis pour CameraX et TFLite
+ * @param modelIndex Index du modèle de classification sélectionné
+ * @param delegateIndex Index du délégué d’inférence (CPU/GPU/NNAPI)
+ * @param viewModel ViewModel utilisé pour suivre l’état de chargement
+ * @param onResults Callback appelé à chaque résultat de classification avec le temps d’inférence
+ * @param onImageCaptureReady Callback exposant l’instance d’ImageCapture pour la capture de photo
  */
+
+// Référence globale utilisée pour capturer des photos
+lateinit var imageCapture: ImageCapture
 
 @Composable
 fun CameraPreviewComposable(
+    lifecycleOwner: LifecycleOwner,
     modifier: Modifier = Modifier,
+    context: Context,
     modelIndex: Int,
     delegateIndex: Int,
     viewModel: ScanViewModel,
     onResults: (List<Classifications>?, Long) -> Unit,
     onImageCaptureReady: (ImageCapture) -> Unit
 ) {
-    val currentContext = LocalContext.current
-    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
-    val previewView = remember { PreviewView(currentContext) }
-    val cameraExecutor = remember { Executors.newSingleThreadExecutor() }
-
-    DisposableEffect(lifecycleOwner, modelIndex, delegateIndex, currentContext) {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(currentContext)
-
-        val cameraProviderListener = Runnable {
-            try {
-                setupCameraUseCases(
-                    context = currentContext,
-                    previewView = previewView,
-                    modelIndex = modelIndex,
-                    delegateIndex = delegateIndex,
-                    viewModel = viewModel,
-                    onResults = onResults,
-                    onImageCaptureReady = onImageCaptureReady,
-                    lifecycleOwner = lifecycleOwner,
-                    cameraExecutor = cameraExecutor
-                )
-            } catch (e: Exception) {
-                Log.e("CameraX", "Use case binding failed", e)
-                viewModel.setError("Camera setup failed: ${e.localizedMessage}")
-            }
-        }
-
-        cameraProviderFuture.addListener(cameraProviderListener, ContextCompat.getMainExecutor(currentContext))
-
-        onDispose {
-            cameraExecutor.shutdown()
-            cameraProviderFuture.addListener({
-                cameraProviderFuture.get()?.unbindAll()
-            }, ContextCompat.getMainExecutor(currentContext))
-        }
-    }
-
     AndroidView(
-        factory = { previewView },
-        modifier = modifier
-    )
-}
+        modifier = modifier,
+        factory = { ctx ->
+            val previewView = PreviewView(ctx) // Vue utilisée pour afficher le flux caméra
+            val cameraProviderFuture = ProcessCameraProvider.getInstance(ctx) // Fournisseur CameraX
 
-private fun setupCameraUseCases(
-    context: android.content.Context,
-    previewView: PreviewView,
-    modelIndex: Int,
-    delegateIndex: Int,
-    viewModel: ScanViewModel,
-    onResults: (List<Classifications>?, Long) -> Unit,
-    onImageCaptureReady: (ImageCapture) -> Unit,
-    lifecycleOwner: androidx.lifecycle.LifecycleOwner,
-    cameraExecutor: ExecutorService
-) {
-    val cameraProvider = ProcessCameraProvider.getInstance(context).get()
+            cameraProviderFuture.addListener({
+                val cameraProvider = cameraProviderFuture.get()
 
-    val preview = Preview.Builder().build().also {
-        it.surfaceProvider = previewView.surfaceProvider
-    }
+                val preview = Preview.Builder().build().apply {
+                    surfaceProvider = previewView.surfaceProvider // Lien entre le flux caméra et l’affichage
+                }
 
-    val imageCapture = ImageCapture.Builder().build()
-    onImageCaptureReady(imageCapture)
+                imageCapture = ImageCapture.Builder().build() // Use case pour la capture d'image
+                onImageCaptureReady(imageCapture)
 
-    val imageClassifierHelper = ImageClassifierHelper(
-        context = context,
-        currentModel = modelIndex,
-        currentDelegate = delegateIndex,
-        viewModel = viewModel,
-        imageClassifierListener = object : ClassifierListener {
-            override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
-                onResults(results, inferenceTime)
-            }
+                val imageClassifierHelper = ImageClassifierHelper(
+                    context = ctx,
+                    currentModel = modelIndex,
+                    currentDelegate = delegateIndex,
+                    viewModel = viewModel,
+                    imageClassifierListener = object : ClassifierListener {
+                        override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
+                            onResults(results, inferenceTime) // Callback de résultat depuis la classification
+                        }
 
-            override fun onError(error: String) {
-                Log.e("CameraPreview", "Classifier Error: $error")
-                viewModel.setError("Classifier Error: $error")
-            }
+                        override fun onError(error: String) {
+                            Log.e("CameraPreview", error) // Gestion des erreurs
+                        }
 
-            override fun onLoading() {
-                viewModel.setLoading(true)
-            }
+                        override fun onLoading() {
+                            viewModel.setLoading(true) // Début de l’initialisation du modèle
+                        }
 
-            override fun onInitialized() {
-                viewModel.setLoading(false)
-            }
+                        override fun onInitialized() {
+                            viewModel.setLoading(false) // Fin de l’initialisation du modèle
+                        }
+                    }
+                )
+
+                val imageAnalysis = ImageAnalysis.Builder()
+                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .build()
+                    .apply {
+                        // Use case d'analyse d’image avec notre classifieur personnalisé
+                        setAnalyzer(
+                            ContextCompat.getMainExecutor(ctx),
+                            CameraImageAnalyzer(imageClassifierHelper)
+                        )
+                    }
+
+                val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA // Sélection de la caméra arrière
+
+                try {
+                    cameraProvider.unbindAll() // Nettoyer les anciens use cases
+                    cameraProvider.bindToLifecycle(
+                        lifecycleOwner,
+                        cameraSelector,
+                        preview,
+                        imageAnalysis,
+                        imageCapture
+                    ) // Reconfiguration complète de CameraX
+                } catch (e: Exception) {
+                    Log.e("CameraX", "Échec du bind des use cases", e)
+                }
+            }, ContextCompat.getMainExecutor(ctx))
+
+            previewView // Retourne la vue de prévisualisation pour l’affichage à l’écran
         }
-    )
-
-    val imageAnalysis = ImageAnalysis.Builder()
-        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-        .build()
-        .also {
-            it.setAnalyzer(cameraExecutor, CameraImageAnalyzer(imageClassifierHelper))
-        }
-
-    val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-    cameraProvider.unbindAll()
-    cameraProvider.bindToLifecycle(
-        lifecycleOwner,
-        cameraSelector,
-        preview,
-        imageAnalysis,
-        imageCapture
     )
 }

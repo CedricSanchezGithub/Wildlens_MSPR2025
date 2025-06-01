@@ -14,10 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.wildlens.mspr_2025.presentation.screens.camera.ui.components.*
 import com.wildlens.mspr_2025.presentation.screens.camera.state.ScanViewModel
+import com.wildlens.mspr_2025.presentation.screens.camera.ui.components.*
 import org.tensorflow.lite.gpu.CompatibilityList
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -25,6 +27,7 @@ import org.tensorflow.lite.gpu.CompatibilityList
 fun CameraScreen(
     context: Context = LocalContext.current,
     viewModel: ScanViewModel = hiltViewModel(),
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 ) {
     val permissionsState = rememberMultiplePermissionsState(
         permissions = listOf(Manifest.permission.CAMERA)
@@ -54,7 +57,10 @@ fun CameraScreen(
                     modelIndex = modelIndex,
                     delegateIndex = delegateIndex,
                     viewModel = viewModel,
-                    onImageCaptureReady = { imageCaptureRef.value = it }
+                    onImageCaptureReady = { imageCaptureRef.value = it },
+                    lifecycleOwner = lifecycleOwner,
+                    context = context,
+
                 )
 
                 if (isLoading) {
@@ -72,11 +78,11 @@ fun CameraScreen(
                         .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.95f))
                         .padding(16.dp)
                 ) {
-                     // Afficher l'historique des résultats
-                        ClassificationHistoryPanel(
-                            resultsHistory = resultsHistory,
-                            onClearHistory = viewModel::clearHistory
-                        )
+                    // Afficher l'historique des résultats
+                    ClassificationHistoryPanel(
+                        resultsHistory = resultsHistory,
+                        onClearHistory = viewModel::clearHistory
+                    )
 
                     BottomControlsPanel(
                         context = context,
