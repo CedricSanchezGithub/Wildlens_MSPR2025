@@ -1,6 +1,5 @@
 package com.wildlens.mspr_2025.presentation.screens.camera.ui
 
-import CameraPreviewComposable
 import android.Manifest
 import android.content.Context
 import android.net.Uri
@@ -15,8 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.wildlens.mspr_2025.presentation.screens.camera.ui.components.*
