@@ -14,8 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.wildlens.mspr_2025.presentation.screens.camera.ui.components.*
@@ -25,8 +23,6 @@ import org.tensorflow.lite.gpu.CompatibilityList
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreen(
-    modifier: Modifier = Modifier,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     context: Context = LocalContext.current,
     viewModel: ScanViewModel = hiltViewModel(),
 ) {
@@ -52,8 +48,6 @@ fun CameraScreen(
         permissionsState.allPermissionsGranted -> {
             Box(modifier = Modifier.fillMaxSize()) {
                 CameraPreviewComposable(
-                    lifecycleOwner = lifecycleOwner,
-                    context = context,
                     onResults = { classifications, timeMs ->
                         viewModel.onNewResults(classifications, timeMs)
                     },

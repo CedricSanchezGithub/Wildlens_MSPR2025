@@ -29,6 +29,13 @@ import java.util.concurrent.atomic.AtomicBoolean
  * - Utilise un verrou (AtomicBoolean) pour éviter les traitements concurrents.
  *
  * S'utiliser avec CameraX via setAnalyzer().
+ *
+ * En résumé,
+ * "CameraImageAnalyzer est l’élément qui reçoit les images de la caméra, les convertit,
+ * et déclenche la classification IA.
+ * Il agit comme une passerelle entre CameraX et TensorFlow Lite,
+ * tout en évitant le traitement de plusieurs images simultanément."
+ *
  */
 
 class CameraImageAnalyzer(

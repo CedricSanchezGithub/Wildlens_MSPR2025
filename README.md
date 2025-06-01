@@ -1,95 +1,131 @@
-📱 Wildlens – Application Android
-🚀 Présentation
+# 📸 WildLens – Animal Footprint Recognition App
 
-Wildlens est une application Android développée avec Jetpack Compose. 
-Elle s’appuie sur une architecture moderne et modulaire, conçue pour la maintenabilité, la scalabilité et une excellente expérience développeur.
-🛠️ Technologies utilisées
+WildLens is a mobile Android application that leverages **machine learning** to help users identify animal species from **footprint images**. Designed for nature enthusiasts, researchers, and students, the app guides users through a quick scanning process and provides real-time predictions.
 
-    Kotlin
+---
 
-    Jetpack Compose – UI déclarative moderne
+## 🚀 Features
 
-    Navigation Compose – gestion de la navigation entre les écrans
+- 📷 **Camera integration** for footprint capture
+- 🧠 **On-device AI inference** using TensorFlow Lite
+- 🔍 **Animal species identification** via a classification model
+- 📖 **Information cards** for known species (e.g. lifestyle, habitat)
+- 🧪 Offline prediction + online metadata fetch via **Firestore**
+- 🛠️ Developed with **Jetpack Compose**, **MVVM architecture** and **Hilt DI**
 
-    Firebase Authentication – authentification sécurisée (email / mot de passe)
+---
 
-    Hilt – injection de dépendances simple et puissante
+## 🧱 Architecture Overview
 
-    StateFlow / SharedFlow – gestion des flux d’état et d’événements
+WildLens follows a **clean MVVM architecture** with the following layers:
 
-    CameraX – gestion de la prise de photo
+```
+View (Jetpack Compose)
+     ↓
+ViewModel (State & Events, DI with Hilt)
+     ↓
+UseCases (e.g. LoadModel, ClassifyImage)
+     ↓
+Repositories (e.g. MetadataRepository, InferenceRepository)
+     ↓
+Data Sources (Firestore + Local assets)
+```
 
-    libs.versions.toml – gestion centralisée des versions et dépendances (version catalog)
+### ✅ Main Technologies
 
-🧱 Architecture
-🧭 MVI (Model – View – Intent)
+| Area              | Technology / Library                                      |
+|-------------------|-----------------------------------------------------------|
+| UI                | Jetpack Compose, Material 3, Navigation Compose           |
+| State Management  | ViewModel, StateFlow, LiveData                            |
+| Dependency Injection | Hilt + KSP                                              |
+| ML Inference      | TensorFlow Lite, TFLite Support & Task Library            |
+| Backend           | Firebase Firestore (metadata + species info)              |
+| Camera            | CameraX                                                   |
+| Permissions       | Accompanist Permissions                                   |
+| Serialization     | Kotlinx Serialization + Retrofit                          |
+| Testing           | JUnit, MockK, Coroutine Test, Espresso                    |
 
-Chaque écran suit une architecture MVI :
+---
 
-    State : décrit l’état de l’écran (Loading, Success, Error)
+## 🧪 Testing Strategy
 
-    Action : représente les intentions de la vue (clic, scroll, etc.)
+- **Unit tests** with `JUnit4`, `MockK`, and `kotlinx.coroutines.test`
+- **UI tests** using `Espresso` and `Compose Test`
+- Instrumentation runner: `androidx.test.runner.AndroidJUnitRunner`
 
-    UiEvent : effets ponctuels comme snackbars ou scroll
+---
 
-    NavigationEvent : événements de navigation vers d’autres écrans
+## 📁 Modules & Packages
 
-    ViewModel : cœur logique de l’écran, gère les actions, modifie l’état, émet les événements
+- `ui/`: Composables and screens
+- `viewmodel/`: ViewModels handling state & actions
+- `data/`: Data sources and repositories (Firestore, model files)
+- `ml/`: ML model loader and inference logic
+- `di/`: Hilt modules for dependency injection
+- `utils/`: Helper functions and extensions
 
-🗂 Structure du projet (par feature)
+---
 
-Organisation en features modulaires dans ui/screens/ :
+## 📷 Screenshots (TODO)
 
-    home/
+Add screenshots demonstrating:
+- Camera capture
+- Prediction result
+- Species detail view
 
-    fav/
+---
 
-    login/
+## 📦 Build & Run
 
-Chaque feature contient :
+Make sure the following SDKs are installed:
 
-    presentation/ : fichiers liés à la UI (Screen, ScreenSuccess)
+- **minSdk**: 24
+- **targetSdk**: 34
+- **compileSdk**: 35
 
-    state/ : ViewModel, State, Action, Events
+Then run:
 
-Exemple :
+```bash
+./gradlew installDebug
+```
 
-screens/  
-└── home/  
-├── presentation/  
-│   ├── HomeScreen.kt  
-│   ├── HomeScreenSuccess.kt  
-├── state/  
-│   ├── HomeViewModel.kt  
-│   ├── HomeState.kt  
-│   ├── HomeAction.kt  
-│   ├── HomeUiEvent.kt  
-│   ├── HomeNavigationEvent.kt  
+---
 
+## 🔐 Permissions Used
 
-💡 Bonnes pratiques adoptées
+- `CAMERA` – For image capture
+- `INTERNET` – To retrieve metadata from Firebase
+- `READ_EXTERNAL_STORAGE` – For image access (if implemented)
 
-    Clean code : code clair, découpé et testable
+---
 
-    Feature-first : découpage par fonctionnalité, prêt pour la modularisation
+## 🌍 Multilingual
 
-    Separation of concerns : la UI, les états, et la logique métier sont bien séparés
+Support planned for:
+- 🇫🇷 French (default)
+- 🇬🇧 English
 
-    Scaffold personnalisé : WildlensScaffold pour uniformiser les écrans
+---
 
-🔐 Authentification Firebase
+## 🧠 AI Model Details
 
-    Méthode : Email / Mot de passe
+- Format: TensorFlow Lite
+- Input: 224x224 RGB image
+- Output: Top-K class prediction with confidence
+- Model loaded from assets and run via `TFLiteTask`
 
-    Sécurisée et gratuite (Firebase Free Tier)
+---
 
-    Gestion de session via FirebaseAuth.getInstance().currentUser
+## 🛠️ Future Enhancements
 
-🧪 Tests
+- Export results and track observations
+- Map view with geolocation support
+- More detailed species info from external APIs
 
-    ViewModel testables grâce à StateFlow
+---
 
-    Tests unitaires (JUnit)
+## 📚 License
 
-    Test UI à venir (Compose Testing Library)
+Project for educational purposes under the DEVIA 2024–2025 MSPR program.
 
+---

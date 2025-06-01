@@ -62,5 +62,6 @@
     <string name="current_results">Current results</string>
     <string name="app_tagline">Identify animal tracks using Artificial Intelligence</string>
     <string name="scan_button">Scan a track</string>
+    <string name="track_photos_count">%1$d track photos of %2$s</string>
 
 </resources>

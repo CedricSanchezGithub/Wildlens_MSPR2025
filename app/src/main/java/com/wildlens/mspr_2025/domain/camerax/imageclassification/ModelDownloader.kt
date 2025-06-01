@@ -19,7 +19,8 @@ import java.net.URL
 object ModelDownloader {
 
     private val modelUrls = mapOf(
-        4 to "https://github.com/tensorflow/examples/raw/master/lite/examples/image_classification/android/app/src/main/assets/efficientnet-lite4.tflite"
+        4 to "https://github.com/tensorflow/examples/raw/master/lite/examples/image_classification/android/app/src/main/assets/efficientnet-lite4.tflite",
+        5 to "notre prochain modèle à télécharger"
     )
     /**
     * Télécharge le modèle correspondant à l’index si non déjà présent localement.
